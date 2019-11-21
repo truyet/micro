@@ -9,11 +9,7 @@ import (
 	"github.com/micro/go-micro/config/cmd"
 	gorun "github.com/micro/go-micro/runtime"
 	"github.com/micro/go-micro/util/log"
-
-	// include usage
-
 	"github.com/micro/micro/internal/update"
-	_ "github.com/micro/micro/internal/usage"
 )
 
 type initNotifier struct {
@@ -63,18 +59,7 @@ func initCommand(context *cli.Context) {
 	}
 
 	services := []string{
-		"network",  // :8085
-		"runtime",  // :8088
-		"registry", // :8000
-		"broker",   // :8001
-		"store",    // :8002
-		"tunnel",   // :8083
-		"router",   // :8084
-		"monitor",  // :????
-		"proxy",    // :8081
-		"api",      // :8080
-		"web",      // :8082
-		"bot",      // :????
+		"api", // :8080
 	}
 
 	// create new micro runtime

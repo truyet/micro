@@ -12,30 +12,16 @@ import (
 	gorun "github.com/micro/go-micro/runtime"
 	"github.com/micro/go-micro/util/log"
 	"github.com/micro/micro/api"
-	"github.com/micro/micro/bot"
-	"github.com/micro/micro/broker"
+	"github.com/micro/micro/router"
 	"github.com/micro/micro/cli"
-	"github.com/micro/micro/health"
-	"github.com/micro/micro/monitor"
-	"github.com/micro/micro/network"
-	"github.com/micro/micro/new"
 	"github.com/micro/micro/plugin"
 	"github.com/micro/micro/plugin/build"
-	"github.com/micro/micro/proxy"
-	"github.com/micro/micro/registry"
-	"github.com/micro/micro/router"
 	"github.com/micro/micro/runtime"
 	"github.com/micro/micro/server"
 	"github.com/micro/micro/service"
-	"github.com/micro/micro/store"
 	"github.com/micro/micro/token"
-	"github.com/micro/micro/tunnel"
-	"github.com/micro/micro/web"
-
-	// include usage
 
 	"github.com/micro/micro/internal/update"
-	_ "github.com/micro/micro/internal/usage"
 )
 
 var (
@@ -186,28 +172,15 @@ func setup(app *ccli.App) {
 		if len(ctx.String("api_address")) > 0 {
 			api.Address = ctx.String("api_address")
 		}
-		if len(ctx.String("proxy_address")) > 0 {
-			proxy.Address = ctx.String("proxy_address")
-		}
-		if len(ctx.String("web_address")) > 0 {
-			web.Address = ctx.String("web_address")
-		}
 		if len(ctx.String("network_address")) > 0 {
 			server.Network = ctx.String("network_address")
 		}
 		if len(ctx.String("router_address")) > 0 {
 			router.Address = ctx.String("router_address")
 		}
-		if len(ctx.String("tunnel_address")) > 0 {
-			tunnel.Address = ctx.String("tunnel_address")
-		}
 		if len(ctx.String("api_namespace")) > 0 {
 			api.Namespace = ctx.String("api_namespace")
 		}
-		if len(ctx.String("web_namespace")) > 0 {
-			web.Namespace = ctx.String("web_namespace")
-		}
-
 		for _, p := range plugins {
 			if err := p.Init(ctx); err != nil {
 				return err
@@ -252,24 +225,13 @@ func Init(options ...micro.Option) {
 func Setup(app *ccli.App, options ...micro.Option) {
 	// Add the various commands
 	app.Commands = append(app.Commands, api.Commands(options...)...)
-	app.Commands = append(app.Commands, bot.Commands()...)
 	app.Commands = append(app.Commands, cli.Commands()...)
-	app.Commands = append(app.Commands, broker.Commands(options...)...)
-	app.Commands = append(app.Commands, health.Commands(options...)...)
-	app.Commands = append(app.Commands, proxy.Commands(options...)...)
-	app.Commands = append(app.Commands, monitor.Commands(options...)...)
 	app.Commands = append(app.Commands, router.Commands(options...)...)
-	app.Commands = append(app.Commands, tunnel.Commands(options...)...)
-	app.Commands = append(app.Commands, network.Commands(options...)...)
-	app.Commands = append(app.Commands, registry.Commands(options...)...)
 	app.Commands = append(app.Commands, runtime.Commands(options...)...)
 	app.Commands = append(app.Commands, server.Commands(options...)...)
 	app.Commands = append(app.Commands, service.Commands(options...)...)
-	app.Commands = append(app.Commands, store.Commands(options...)...)
 	app.Commands = append(app.Commands, token.Commands()...)
-	app.Commands = append(app.Commands, new.Commands()...)
 	app.Commands = append(app.Commands, build.Commands()...)
-	app.Commands = append(app.Commands, web.Commands(options...)...)
 
 	// add the init command for our internal operator
 	app.Commands = append(app.Commands, ccli.Command{
@@ -310,18 +272,10 @@ func Setup(app *ccli.App, options ...micro.Option) {
 		log.Info("Loading core services")
 
 		services := []string{
-			"network",  // :8085
 			"runtime",  // :8088
-			"registry", // :8000
 			"broker",   // :8001
-			"store",    // :8002
-			"tunnel",   // :8083
 			"router",   // :8084
-			"monitor",  // :????
-			"proxy",    // :8081
 			"api",      // :8080
-			"web",      // :8082
-			"bot",      // :????
 		}
 
 		// create new micro runtime
