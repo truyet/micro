@@ -12,12 +12,9 @@ import (
 	gorun "github.com/micro/go-micro/runtime"
 	"github.com/micro/go-micro/util/log"
 	"github.com/micro/micro/api"
-	"github.com/micro/micro/router"
-	"github.com/micro/micro/cli"
 	"github.com/micro/micro/plugin"
 	"github.com/micro/micro/plugin/build"
 	"github.com/micro/micro/runtime"
-	"github.com/micro/micro/server"
 	"github.com/micro/micro/service"
 	"github.com/micro/micro/token"
 
@@ -85,39 +82,9 @@ func setup(app *ccli.App) {
 			EnvVar: "MICRO_API_ADDRESS",
 		},
 		ccli.StringFlag{
-			Name:   "proxy_address",
-			Usage:  "Proxy requests via the HTTP address specified",
-			EnvVar: "MICRO_PROXY_ADDRESS",
-		},
-		ccli.StringFlag{
-			Name:   "web_address",
-			Usage:  "Set the web UI address e.g 0.0.0.0:8082",
-			EnvVar: "MICRO_WEB_ADDRESS",
-		},
-		ccli.StringFlag{
-			Name:   "network",
-			Usage:  "Set the micro network name: local, go.micro",
-			EnvVar: "MICRO_NETWORK",
-		},
-		ccli.StringFlag{
-			Name:   "network_address",
-			Usage:  "Set the micro network address e.g. :9093",
-			EnvVar: "MICRO_NETWORK_ADDRESS",
-		},
-		ccli.StringFlag{
-			Name:   "router_address",
-			Usage:  "Set the micro router address e.g. :8084",
-			EnvVar: "MICRO_ROUTER_ADDRESS",
-		},
-		ccli.StringFlag{
 			Name:   "gateway_address",
 			Usage:  "Set the micro default gateway address e.g. :9094",
 			EnvVar: "MICRO_GATEWAY_ADDRESS",
-		},
-		ccli.StringFlag{
-			Name:   "tunnel_address",
-			Usage:  "Set the micro tunnel address e.g. :8083",
-			EnvVar: "MICRO_TUNNEL_ADDRESS",
 		},
 		ccli.StringFlag{
 			Name:   "api_handler",
@@ -128,16 +95,6 @@ func setup(app *ccli.App) {
 			Name:   "api_namespace",
 			Usage:  "Set the namespace used by the API e.g. com.example.api",
 			EnvVar: "MICRO_API_NAMESPACE",
-		},
-		ccli.StringFlag{
-			Name:   "web_namespace",
-			Usage:  "Set the namespace used by the Web proxy e.g. com.example.web",
-			EnvVar: "MICRO_WEB_NAMESPACE",
-		},
-		ccli.BoolFlag{
-			Name:   "enable_stats",
-			Usage:  "Enable stats",
-			EnvVar: "MICRO_ENABLE_STATS",
 		},
 		ccli.BoolFlag{
 			Name:   "auto_update",
@@ -171,12 +128,6 @@ func setup(app *ccli.App) {
 		}
 		if len(ctx.String("api_address")) > 0 {
 			api.Address = ctx.String("api_address")
-		}
-		if len(ctx.String("network_address")) > 0 {
-			server.Network = ctx.String("network_address")
-		}
-		if len(ctx.String("router_address")) > 0 {
-			router.Address = ctx.String("router_address")
 		}
 		if len(ctx.String("api_namespace")) > 0 {
 			api.Namespace = ctx.String("api_namespace")
@@ -225,10 +176,7 @@ func Init(options ...micro.Option) {
 func Setup(app *ccli.App, options ...micro.Option) {
 	// Add the various commands
 	app.Commands = append(app.Commands, api.Commands(options...)...)
-	app.Commands = append(app.Commands, cli.Commands()...)
-	app.Commands = append(app.Commands, router.Commands(options...)...)
 	app.Commands = append(app.Commands, runtime.Commands(options...)...)
-	app.Commands = append(app.Commands, server.Commands(options...)...)
 	app.Commands = append(app.Commands, service.Commands(options...)...)
 	app.Commands = append(app.Commands, token.Commands()...)
 	app.Commands = append(app.Commands, build.Commands()...)
@@ -272,10 +220,10 @@ func Setup(app *ccli.App, options ...micro.Option) {
 		log.Info("Loading core services")
 
 		services := []string{
-			"runtime",  // :8088
-			"broker",   // :8001
-			"router",   // :8084
-			"api",      // :8080
+			"runtime", // :8088
+			"broker",  // :8001
+			"router",  // :8084
+			"api",     // :8080
 		}
 
 		// create new micro runtime
