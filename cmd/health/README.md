@@ -41,4 +41,3 @@ Response will be 200 OK
 ```
 OK
 ```
-

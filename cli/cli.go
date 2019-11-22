@@ -83,6 +83,7 @@ func runc(c *cli.Context) {
 	}
 }
 
+//HealthCommands Query the health of a service
 func HealthCommands() []cli.Command {
 	return []cli.Command{
 		{
@@ -100,6 +101,7 @@ func HealthCommands() []cli.Command {
 	}
 }
 
+//Commands Run the interactive CLI
 func Commands() []cli.Command {
 	commands := []cli.Command{
 		{

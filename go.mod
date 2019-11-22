@@ -21,7 +21,7 @@ require (
 	github.com/pborman/uuid v1.2.0
 	github.com/pquerna/otp v1.2.0
 	github.com/serenize/snaker v0.0.0-20171204205717-a683aaf2d516
-	golang.org/x/net v0.0.0-20191119073136-fc4aabc6c914
+	golang.org/x/net v0.0.0-20191109021931-daa7c04131f5
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )
