@@ -2,6 +2,9 @@
 
 ## Overview
 
+# enable go modules
+export GO111MODULE=on
+
 
 ## Usage
 
