@@ -16,8 +16,6 @@ import (
 	"github.com/micro/micro/plugin/build"
 	"github.com/micro/micro/runtime"
 	"github.com/micro/micro/token"
-
-	"github.com/micro/micro/internal/update"
 )
 
 //App Info Vars
@@ -181,14 +179,6 @@ func Setup(app *ccli.App, options ...micro.Option) {
 	app.Commands = append(app.Commands, build.Commands()...)
 
 	// add the init command for our internal operator
-	app.Commands = append(app.Commands, ccli.Command{
-		Name:  "init",
-		Usage: "Run the micro operator",
-		Action: func(c *ccli.Context) {
-			initCommand(c)
-		},
-		Flags: []ccli.Flag{},
-	})
 
 	// boot micro
 	app.Action = func(context *ccli.Context) {
@@ -227,14 +217,6 @@ func Setup(app *ccli.App, options ...micro.Option) {
 
 		// create new micro runtime
 		muRuntime := cmd.DefaultCmd.Options().Runtime
-
-		// Use default update notifier
-		if context.GlobalBool("auto_update") {
-			options := []gorun.Option{
-				gorun.WithNotifier(update.NewNotifier(BuildDate)),
-			}
-			(*muRuntime).Init(options...)
-		}
 
 		for _, service := range services {
 			name := fmt.Sprintf("go.micro.%s", service)

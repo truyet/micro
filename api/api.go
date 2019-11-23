@@ -38,6 +38,7 @@ import (
 	"github.com/micro/micro/plugin"
 )
 
+//basic vars
 var (
 	Name                  = "go.micro.api"
 	Address               = ":8080"
@@ -314,6 +315,7 @@ func run(ctx *cli.Context, srvOpts ...micro.Option) {
 	}
 }
 
+//Commands for api sub cmd
 func Commands(options ...micro.Option) []cli.Command {
 	command := cli.Command{
 		Name:  "api",

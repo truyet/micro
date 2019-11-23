@@ -26,7 +26,7 @@ const (
 	RunUsage = "Required usage: micro run service --name example --version latest --source go/package/import/path"
 	// KillUsage message for the kill command
 	KillUsage = "Require usage: micro kill service --name example (optional: --version latest)"
-	// Getusage message for micro get command
+	// GetUsage message for micro get command
 	GetUsage = "Require usage: micro ps service --name example (optional: --version latest)"
 )
 
@@ -327,23 +327,6 @@ func Commands(options ...micro.Option) []cli.Command {
 			},
 			Action: func(ctx *cli.Context) {
 				run(ctx, options...)
-			},
-		},
-		{
-			// In future we'll also have `micro run [x]` hence `micro run service` requiring "service"
-			Name:  "run",
-			Usage: "Run a service e.g micro run service version",
-			Flags: Flags(),
-			Action: func(ctx *cli.Context) {
-				runService(ctx, options...)
-			},
-		},
-		{
-			Name:  "ps",
-			Usage: "Ps returns status of a running service or lists all running services e.g. micro ps",
-			Flags: Flags(),
-			Action: func(ctx *cli.Context) {
-				getService(ctx, options...)
 			},
 		},
 	}
