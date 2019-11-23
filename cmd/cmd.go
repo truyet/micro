@@ -15,7 +15,6 @@ import (
 	"github.com/micro/micro/plugin"
 	"github.com/micro/micro/plugin/build"
 	"github.com/micro/micro/runtime"
-	"github.com/micro/micro/service"
 	"github.com/micro/micro/token"
 
 	"github.com/micro/micro/internal/update"
@@ -178,7 +177,6 @@ func Setup(app *ccli.App, options ...micro.Option) {
 	// Add the various commands
 	app.Commands = append(app.Commands, api.Commands(options...)...)
 	app.Commands = append(app.Commands, runtime.Commands(options...)...)
-	app.Commands = append(app.Commands, service.Commands(options...)...)
 	app.Commands = append(app.Commands, token.Commands()...)
 	app.Commands = append(app.Commands, build.Commands()...)
 
