@@ -13,11 +13,20 @@
 
 ```bash
 go env -w GOPROXY=https://goproxy.cn,direct   //go >= 1.13
-go env -w GOSUMDB=sum.golang.org
+go env -w GOSUMDB=sum.golang.org //可选
+```
 
 或者是
+
+```bash
 go env -w GOPROXY=direct
 go env -w GOSUMDB=sum.golang.google.cn
+```
+
+或者是
+
+```bash
+go env -w GOPROXY=https://goproxy.io,direct
 ```
 
 ## enable go modules
