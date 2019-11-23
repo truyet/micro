@@ -319,7 +319,7 @@ func run(ctx *cli.Context, srvOpts ...micro.Option) {
 func Commands(options ...micro.Option) []cli.Command {
 	command := cli.Command{
 		Name:  "api",
-		Usage: "Run the api gateway",
+		Usage: "Run api-gateway",
 		Action: func(ctx *cli.Context) {
 			run(ctx, options...)
 		},

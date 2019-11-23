@@ -1,13 +1,13 @@
 # Plugins
 
-Plugins are a way of integrating external code into the Micro toolkit. This is completely separate to go-micro plugins. 
-Using plugins here allows you to add additional flags, commands and HTTP handlers to the toolkit. 
+Plugins are a way of integrating external code into the Micro toolkit. This is completely separate to go-micro plugins.
+Using plugins here allows you to add additional flags, commands and HTTP handlers to the toolkit.
 
 ## How it works
 
-There is a global plugin manager under micro/plugin which consists of plugins that will be used across the entire toolkit. 
-Plugins can be registered by calling `plugin.Register`. Each component (api, web, sidecar, cli, bot) has a separate 
-plugin manager used to register plugins which should only be added as part of that component. They can be used in 
+There is a global plugin manager under micro/plugin which consists of plugins that will be used across the entire toolkit.
+Plugins can be registered by calling `plugin.Register`. Each component (api, web, sidecar, cli, bot) has a separate
+plugin manager used to register plugins which should only be added as part of that component. They can be used in
 the same way by called `api.Register`, `web.Register`, etc.
 
 Here's the interface
@@ -83,4 +83,3 @@ Simply build micro with the plugin
 ```shell
 go build -o micro ./main.go ./plugin.go
 ```
-

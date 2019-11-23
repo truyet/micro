@@ -211,7 +211,6 @@ func Setup(app *ccli.App, options ...micro.Option) {
 		services := []string{
 			"runtime", // :8088
 			"broker",  // :8001
-			"router",  // :8084
 			"api",     // :8080
 		}
 
