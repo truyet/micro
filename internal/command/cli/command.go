@@ -6,9 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"math"
 	"net/http"
-	"sort"
 	"strings"
 	"time"
 
@@ -21,8 +19,6 @@ import (
 
 	proto "github.com/micro/go-micro/debug/proto"
 
-
-	"github.com/olekukonko/tablewriter"
 	"github.com/serenize/snaker"
 )
 
@@ -168,7 +164,6 @@ func callContext(c *cli.Context) context.Context {
 
 	return metadata.NewContext(context.Background(), callMD)
 }
-
 
 func Publish(c *cli.Context, args []string) error {
 	if len(args) < 2 {

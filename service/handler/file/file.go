@@ -44,6 +44,7 @@ func getEndpoint(hdr map[string]string) string {
 	return ""
 }
 
+//SendRequest just return a error
 func (p *Proxy) SendRequest(ctx context.Context, req client.Request, rsp client.Response) error {
 	return errors.InternalServerError("go.micro.proxy.http", "SendRequest is unsupported")
 }
@@ -100,10 +101,9 @@ func (p *Proxy) ServeRequest(ctx context.Context, req server.Request, rsp server
 		}
 	}
 
-	return nil
 }
 
-// NewFileProxy returns a router which sends requests to a single file
+// NewSingleHostProxy returns a router which sends requests to a single file
 func NewSingleHostProxy(url string) proxy.Proxy {
 	return &Proxy{
 		Endpoint: url,

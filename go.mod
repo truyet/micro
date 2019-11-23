@@ -13,7 +13,6 @@ require (
 	github.com/hako/branca v0.0.0-20180808000428-10b799466ada
 	github.com/micro/cli v0.2.0
 	github.com/micro/go-micro v1.16.1-0.20191123082556-cae4148594da
-	github.com/olekukonko/tablewriter v0.0.3
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/pborman/uuid v1.2.0
 	github.com/pquerna/otp v1.2.0

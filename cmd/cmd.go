@@ -21,14 +21,15 @@ import (
 	"github.com/micro/micro/internal/update"
 )
 
+//App Info Vars
 var (
 	GitCommit string
 	GitTag    string
 	BuildDate string
 
-	name        = "micro"
-	description = "A microservice runtime"
-	version     = "1.16.0"
+	name        = "micro-gatwway"
+	description = "A micro api-gateway"
+	version     = "0.0.1"
 )
 
 func init() {

@@ -163,39 +163,6 @@ func runService(ctx *cli.Context, srvOpts ...micro.Option) {
 	}
 }
 
-func killService(ctx *cli.Context, srvOpts ...micro.Option) {
-	// we expect `micro run service`
-	if len(ctx.Args()) == 0 || ctx.Args()[0] != "service" {
-		log.Fatal(KillUsage)
-	}
-
-	// get the args
-	name := ctx.String("name")
-	version := ctx.String("version")
-	local := ctx.Bool("local")
-
-	if len(name) == 0 {
-		log.Fatal(KillUsage)
-	}
-
-	var r runtime.Runtime
-	switch local {
-	case true:
-		r = *cmd.DefaultCmd.Options().Runtime
-	default:
-		r = rs.NewRuntime()
-	}
-
-	service := &runtime.Service{
-		Name:    name,
-		Version: version,
-	}
-
-	if err := r.Delete(service); err != nil {
-		log.Fatal(err)
-	}
-}
-
 func getService(ctx *cli.Context, srvOpts ...micro.Option) {
 	// get the args
 	name := ctx.String("name")
@@ -345,6 +312,7 @@ func Flags() []cli.Flag {
 	}
 }
 
+//Commands for runtime
 func Commands(options ...micro.Option) []cli.Command {
 	command := []cli.Command{
 		{
@@ -368,14 +336,6 @@ func Commands(options ...micro.Option) []cli.Command {
 			Flags: Flags(),
 			Action: func(ctx *cli.Context) {
 				runService(ctx, options...)
-			},
-		},
-		{
-			Name:  "kill",
-			Usage: "Kill removes a running service e.g micro kill service",
-			Flags: Flags(),
-			Action: func(ctx *cli.Context) {
-				killService(ctx, options...)
 			},
 		},
 		{

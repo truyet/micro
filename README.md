@@ -12,6 +12,8 @@
 设置参考：
 
 ```bash
+
+go env -w GO111MODULE=on
 go env -w GOPROXY=https://goproxy.cn,direct   //go >= 1.13
 go env -w GOSUMDB=sum.golang.org //可选
 ```
@@ -19,6 +21,7 @@ go env -w GOSUMDB=sum.golang.org //可选
 或者是
 
 ```bash
+go env -w GO111MODULE=on
 go env -w GOPROXY=direct
 go env -w GOSUMDB=sum.golang.google.cn
 ```
@@ -26,12 +29,10 @@ go env -w GOSUMDB=sum.golang.google.cn
 或者是
 
 ```bash
+
+go env -w GO111MODULE=on
 go env -w GOPROXY=https://goproxy.io,direct
 ```
-
-## enable go modules
-
-export GO111MODULE=on
 
 ## Usage
 
@@ -40,5 +41,3 @@ See all the options
 ```bash
 micro --help
 ```
-
-See the [docs](https://micro.mu/docs/) for detailed information on the architecture, installation and use of the platform.
