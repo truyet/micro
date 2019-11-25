@@ -33,3 +33,4 @@ micro
 !micro/
 dist
 *.orig
+/__debug_bin

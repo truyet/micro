@@ -40,7 +40,7 @@ import (
 
 //basic vars
 var (
-	Name                  = "go.micro.api"
+	Name                  = "go.micro.apigateway"
 	Address               = ":8080"
 	Handler               = "meta"
 	Resolver              = "micro"

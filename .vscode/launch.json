@@ -12,11 +12,14 @@
             "program": "${workspaceRoot}/main.go",
             "env": {
                 "MICRO_LOG_LEVEL": "debug",
+//                "MICRO_ENABLE_ACME":"true", //Serve securely by default using ACME via Let’s Encrypt
+//                "MICRO_ACME_HOSTS":"example.com,api.example.com",//host whitelist
+                "MICRO_NAMESPACE":"=com.srv.api", //  /foo HTTP/1.1 routes to service name come.srv.api.foo.
             },
             "args": [
                 "--server_name=api",
                 "api",
-                "--namespace=micro.cn",
+//                "--namespace=micro.cn",
                 // "--broker=nats",
                 // "--broker_address=127.0.0.1:4222",
                 // "--registry=mdns"
