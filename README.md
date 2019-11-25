@@ -4,7 +4,7 @@
 
 当前仓库的计划，是基于Micro精简到剩下Micro-API，再与x-gateway合并新的X-Gateway。
 
-![MICRO-API](docs/micro-api.png)
+![MICRO-API](https://github.com/micro-in-cn/x-gateway/raw/master/docs/micro-api.png)
 
 
 ## Overview
