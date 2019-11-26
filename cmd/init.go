@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
@@ -57,6 +58,13 @@ func initCommand(context *cli.Context) {
 		os.Exit(1)
 	}
 
+	}
+
+	// get the service prefix
+	if namespace := context.GlobalString("namespace"); len(namespace) > 0 {
+		for i, service := range services {
+			services[i] = fmt.Sprintf("%s.%s", namespace, service)
+		}
 	// create new micro runtime
 	muRuntime := cmd.DefaultCmd.Options().Runtime
 
