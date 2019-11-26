@@ -24,8 +24,8 @@ var (
 	GitTag    string
 	BuildDate string
 
-	name        = "micro-gatwway"
-	description = "A micro api-gateway"
+	name        = "x-gateway"
+	description = "A micro apigateway"
 	version     = "0.0.1"
 )
 
