@@ -58,6 +58,8 @@ func initCommand(context *cli.Context) {
 		os.Exit(1)
 	}
 
+	services := []string{
+		"api",      // :8080
 	}
 
 	// get the service prefix
@@ -65,6 +67,7 @@ func initCommand(context *cli.Context) {
 		for i, service := range services {
 			services[i] = fmt.Sprintf("%s.%s", namespace, service)
 		}
+	}
 	// create new micro runtime
 	muRuntime := cmd.DefaultCmd.Options().Runtime
 
