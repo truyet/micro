@@ -1,8 +1,8 @@
-project_name: micro
+project_name: micro-api
 release:
   github:
-    owner: micro
-    name: micro
+    owner: micro-china
+    name: micro-china
   name_template: 'Release {{.Tag}}'
 before:
   hooks:
