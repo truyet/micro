@@ -1,7 +1,6 @@
-# Plugins
+# Micro Plugins
 
-Plugins are a way of integrating external code into the Micro toolkit. This is completely separate to go-micro plugins.
-Using plugins here allows you to add additional flags, commands and HTTP handlers to the toolkit.
+Micro Plugins are a way of integrating external code into the Micro toolkit. This is completely separate to go-micro plugins, Using plugins here allows you to add additional flags, commands and HTTP handlers to the toolkit.
 
 ## How it works
 
@@ -16,25 +15,25 @@ Here's the interface
 // Plugin is the interface for plugins to micro. It differs from go-micro in that it's for
 // the micro API, Web, Sidecar, CLI. It's a method of building middleware for the HTTP side.
 type Plugin interface {
-	// Global Flags
-	Flags() []cli.Flag
-	// Sub-commands
-	Commands() []cli.Command
-	// Handle is the middleware handler for HTTP requests. We pass in
-	// the existing handler so it can be wrapped to create a call chain.
-	Handler() Handler
-	// Init called when command line args are parsed.
-	// The initialised cli.Context is passed in.
-	Init(*cli.Context) error
-	// Name of the plugin
-	String() string
+// Global Flags
+Flags() []cli.Flag
+// Sub-commands
+Commands() []cli.Command
+// Handle is the middleware handler for HTTP requests. We pass in
+// the existing handler so it can be wrapped to create a call chain.
+Handler() Handler
+// Init called when command line args are parsed.
+// The initialised cli.Context is passed in.
+Init(*cli.Context) error
+// Name of the plugin
+String() string
 }
 
 // Manager is the plugin manager which stores plugins and allows them to be retrieved.
 // This is used by all the components of micro.
 type Manager interface {
-        Plugins() map[string]Plugin
-        Register(name string, plugin Plugin) error
+ Plugins() map[string]Plugin
+ Register(name string, plugin Plugin) error
 }
 
 // Handler is the plugin middleware handler which wraps an existing http.Handler passed in.
@@ -54,25 +53,26 @@ Create a plugin.go file in the top level dir
 package main
 
 import (
-	"log"
-	"github.com/micro/cli"
-	"github.com/micro/micro/plugin"
+  "log"
+  "github.com/micro/cli"
+  "github.com/micro/micro/plugin"
+  "github.com/micro/go-micro/util/log"
 )
 
 func init() {
-	plugin.Register(plugin.NewPlugin(
-		plugin.WithName("example"),
-		plugin.WithFlag(cli.StringFlag{
-			Name:   "example_flag",
-			Usage:  "This is an example plugin flag",
-			EnvVar: "EXAMPLE_FLAG",
-			Value: "avalue",
-		}),
-		plugin.WithInit(func(ctx *cli.Context) error {
-			log.Println("Got value for example_flag", ctx.String("example_flag"))
-			return nil
-		}),
-	))
+  plugin.Register(plugin.NewPlugin(
+    plugin.WithName("example"),
+    plugin.WithFlag(cli.StringFlag{
+      Name:   "example_flag",
+      Usage:  "This is an example plugin flag",
+      EnvVar: "EXAMPLE_FLAG",
+      Value: "avalue",
+      }),
+      plugin.WithInit(func(ctx *cli.Context) error {
+        log.Println("Got value for example_flag", ctx.String("example_flag"))
+        return nil
+      }),
+  ))
 }
 ```
 

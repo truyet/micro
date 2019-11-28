@@ -3,6 +3,7 @@ package main
 import (
 	"io"
 	"net/http"
+
 	"github.com/micro/micro/api"
 	"github.com/micro/micro/plugin/micro/cors"
 )
@@ -11,7 +12,7 @@ var (
 	apiTracerCloser, webTracerCloser io.Closer
 )
 
-func cleanwork() error {
+func cleanWork() error {
 	// closer
 	webTracerCloser.Close()
 	apiTracerCloser.Close()
@@ -36,4 +37,3 @@ func initCors() {
 	)
 	api.Register(corsPlugin)
 }
-
