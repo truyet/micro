@@ -6,7 +6,6 @@
 
 ![MICRO-API](https://github.com/micro-in-cn/x-gateway/raw/master/docs/micro-api.png)
 
-
 ## Overview
 
 注意China go mod加速问题：[官方讨论](https://github.com/golang/go/issues/31755)
@@ -42,7 +41,6 @@ go env -w GO111MODULE=on
 go env -w GOPROXY=https://some.other.proxy,direct
 go env -w GOSUMDB=sum.golang.google.cn
 ```
-
 
 ## Usage
 
