@@ -108,7 +108,7 @@ func Commands() []cli.Command {
 	}}
 }
 
-// returns a micro plugin which loads plugins
+//Flags returns a micro plugin which loads plugins
 func Flags() plugin.Plugin {
 	return plugin.NewPlugin(
 		plugin.WithName("plugin"),

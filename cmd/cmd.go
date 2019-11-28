@@ -31,6 +31,7 @@ var (
 
 func init() {
 	plugin.Register(build.Flags())
+	plugin.Register(build.ConstrainScope())
 }
 
 func setup(app *ccli.App) {
