@@ -186,6 +186,14 @@ func Setup(app *ccli.App, options ...micro.Option) {
 	app.Commands = append(app.Commands, build.Commands()...)
 
 	// add the init command for our internal operator
+	app.Commands = append(app.Commands, ccli.Command{
+		Name:  "init",
+		Usage: "Run the micro operator",
+		Action: func(c *ccli.Context) {
+			initCommand(c)
+		},
+		Flags: []ccli.Flag{},
+	})
 
 	// boot micro
 	app.Action = func(context *ccli.Context) {
