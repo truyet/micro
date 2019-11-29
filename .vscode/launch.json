@@ -17,7 +17,7 @@
                 "MICRO_NAMESPACE":"=com.srv.api", //  /foo HTTP/1.1 routes to service name come.srv.api.foo.
             },
             "args": [
-                "--server_name=api",
+                "--server_name=apigw",
                 "api",
 //                "--namespace=micro.cn",
                 // "--broker=nats",

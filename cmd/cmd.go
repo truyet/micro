@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"os/signal"
@@ -31,7 +32,6 @@ var (
 
 func init() {
 	plugin.Register(build.Flags())
-	plugin.Register(build.ConstrainScope())
 }
 
 func setup(app *ccli.App) {
@@ -169,7 +169,8 @@ func buildVersion() string {
 // Init initialised the command line
 func Init(options ...micro.Option) {
 	Setup(cmd.App(), options...)
-
+	set := flag.NewFlagSet(name, flag.ContinueOnError)
+	set.Parse(os.Args[1:])
 	cmd.Init(
 		cmd.Name(name),
 		cmd.Description(description),
