@@ -58,7 +58,13 @@ func initCommand(context *cli.Context) {
 		os.Exit(1)
 	}
 
+	// services to manage
 	services := []string{
+		// network services
+		"network.api",
+		"network.dns",
+		"network.web",
+		// runtime services
 		"api",      // :8080
 	}
 
@@ -71,6 +77,8 @@ func initCommand(context *cli.Context) {
 	// create new micro runtime
 	muRuntime := cmd.DefaultCmd.Options().Runtime
 
+		gorun.WithType("runtime"),
+	// used to signal when to shutdown
 	shutdown := make(chan os.Signal, 1)
 	signal.Notify(shutdown, syscall.SIGTERM, syscall.SIGINT, syscall.SIGQUIT)
 
