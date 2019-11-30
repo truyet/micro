@@ -65,7 +65,7 @@ func initCommand(context *cli.Context) {
 		"network.dns",
 		"network.web",
 		// runtime services
-		"api",      // :8080
+		"api", // :8080
 	}
 
 	// get the service prefix
@@ -77,7 +77,12 @@ func initCommand(context *cli.Context) {
 	// create new micro runtime
 	muRuntime := cmd.DefaultCmd.Options().Runtime
 
+	// specify with a notifier that fires
+	// individual events for each service
+	options := []gorun.Option{
 		gorun.WithType("runtime"),
+	}
+	(*muRuntime).Init(options...)
 	// used to signal when to shutdown
 	shutdown := make(chan os.Signal, 1)
 	signal.Notify(shutdown, syscall.SIGTERM, syscall.SIGINT, syscall.SIGQUIT)

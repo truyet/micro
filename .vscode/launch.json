@@ -18,7 +18,14 @@
             },
             "args": [
                 "--server_name=apigw",
+                "--auto_update=true",
+                "--runtime",
+                "kubernetes",
                 "api",
+                "--handler=rpc",
+                "--gateway_address=0.0.0.0",
+                "--registry",
+                "mdns"
 //                "--namespace=micro.cn",
                 // "--broker=nats",
                 // "--broker_address=127.0.0.1:4222",
