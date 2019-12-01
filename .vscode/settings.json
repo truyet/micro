@@ -2,16 +2,13 @@
     "editor.tabSize": 2,
     "editor.codeLens": true,
     "editor.snippetSuggestions": "top",
-    "files.autoSave": "afterDelay",
     "extensions.ignoreRecommendations": false,
-    "go.buildOnSave": "package",
-    "go.lintOnSave": "package",
-    "go.vetOnSave": "package",
+    "go.lintOnSave": "workspace",
+    "go.vetOnSave": "workspace",
     "go.buildTags": "",
     "go.buildFlags": [],
     "go.lintFlags": [],
     "go.vetFlags": [],
-    "go.coverOnSave": false,
     "go.useCodeSnippetsOnFunctionSuggest": false,
     "go.testFlags": [
         "-v"
