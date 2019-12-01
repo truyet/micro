@@ -14,11 +14,13 @@ var (
 	subCmd      []string //subCmd parsed from os.Args
 	subCmdFlags []string //subCmdFlags for subCmd parsed from os.Args
 
+	flagNameSets = map[string]int{} //flags name cache for quick query
+
 	ErrHelp                          = errors.New("flag: help requested")
 	ErrParsedOver                    = errors.New("arguments: parsed over")
-	ErrParsedDoubleStrike            = errors.New("warning :unexpacted flag --")
-	ErrParsedNoMainFlagValue         = errors.New("warning :no value found in Mian flag")
-	ErrParsedNoSubCmdFlagValue       = errors.New("warning :no value found in SubCmd flag")
+	ErrParsedDoubleStrike            = errors.New("warning: unexpacted flag --")
+	ErrParsedNoMainFlagValue         = errors.New("warning: no value found in Mian flag")
+	ErrParsedNoSubCmdFlagValue       = errors.New("warning: no value found in SubCmd flag")
 	errorLastMainFlag          error = nil
 	errorLastSubCmdFlag        error = nil
 )
@@ -27,6 +29,11 @@ func regularArguments(app *ccli.App) {
 
 	//point to original parameters
 	args = os.Args[1:]
+
+	//cache the flag name for quick searching
+	for idx, f := range app.Flags {
+		flagNameSets[f.GetName()] = idx
+	}
 
 	for _, item := range args {
 		seen, err := parseOne(item, app.Flags)
@@ -100,18 +107,14 @@ func parseOne(s string, appFlags []ccli.Flag) (bool, error) {
 		}
 	}
 
-	//	alreadythere := false
-	for _, f := range appFlags {
-		if name == f.GetName() {
-			//		alreadythere = true              //belong to mainflag
-			mainFlags = append(mainFlags, s) //add to mainflag set
-			//check the next value
-			if !hasValue {
-				errorLastMainFlag = ErrParsedNoMainFlagValue
-				return true, ErrParsedNoMainFlagValue
-			}
-			return true, nil
+	if _, found := flagNameSets[name]; found {
+		mainFlags = append(mainFlags, s) //add to mainflag set
+		//check the next value
+		if !hasValue {
+			errorLastMainFlag = ErrParsedNoMainFlagValue
+			return true, ErrParsedNoMainFlagValue
 		}
+		return true, nil
 	}
 
 	// clearly we did not find s in appFlags which must be subcmdflag
