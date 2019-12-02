@@ -3,6 +3,7 @@ package cmd
 import (
 	"errors"
 	"os"
+	"strings"
 
 	ccli "github.com/micro/cli"
 )
@@ -34,7 +35,9 @@ func constrainSubCmd(subCmd []string) {
 		subCmd = append(subCmd, "api")
 		break
 	case 1:
-		subCmd[0] = "api"
+		if !strings.EqualFold(subCmd[0], "api") || !strings.EqualFold(subCmd[0], "web") {
+			subCmd[0] = "api"
+		}
 		break
 	default:
 		subCmd = []string{"api"}

@@ -16,6 +16,7 @@ import (
 	"github.com/pborman/uuid"
 )
 
+//Token ...
 type Token struct {
 	*p.Token
 }
@@ -37,6 +38,7 @@ func init() {
 	}
 }
 
+//Encode ...
 func (t *Token) Encode(key string) (string, error) {
 	b, err := json.Marshal(t)
 	if err != nil {
@@ -54,6 +56,7 @@ func (t *Token) Encode(key string) (string, error) {
 	return str, nil
 }
 
+//Decode ...
 func (t *Token) Decode(key string, b []byte) error {
 	if len(key) > 32 {
 		key = key[:32]
@@ -69,6 +72,7 @@ func (t *Token) Decode(key string, b []byte) error {
 	return nil
 }
 
+//Valid ...
 func (t *Token) Valid() error {
 	// check id
 	if len(t.Id) == 0 {

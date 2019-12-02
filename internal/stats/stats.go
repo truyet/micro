@@ -10,7 +10,8 @@ import (
 	"time"
 )
 
-type stats struct {
+//Stats of service
+type Stats struct {
 	sync.RWMutex
 
 	Started int64  `json:"started"`
@@ -57,7 +58,7 @@ func render(w http.ResponseWriter, r *http.Request, tmpl string, data interface{
 	}
 }
 
-func (s *stats) run() {
+func (s *Stats) run() {
 	t := time.NewTicker(window)
 	w := 0
 
@@ -91,7 +92,8 @@ func (s *stats) run() {
 	}
 }
 
-func (s *stats) Record(c string, t int) {
+//Record ...
+func (s *Stats) Record(c string, t int) {
 	s.Lock()
 	counter := s.Counters[len(s.Counters)-1]
 	counter.Status[c] += t
@@ -100,7 +102,8 @@ func (s *stats) Record(c string, t int) {
 	s.Unlock()
 }
 
-func (s *stats) ServeHTTP(h http.Handler) http.Handler {
+//ServeHTTP ...
+func (s *Stats) ServeHTTP(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var code string
 		rw := &writer{w, 200}
@@ -122,7 +125,8 @@ func (s *stats) ServeHTTP(h http.Handler) http.Handler {
 	})
 }
 
-func (s *stats) StatsHandler(w http.ResponseWriter, r *http.Request) {
+//StatsHandler ...
+func (s *Stats) StatsHandler(w http.ResponseWriter, r *http.Request) {
 	if ct := r.Header.Get("Content-Type"); ct == "application/json" {
 		s.RLock()
 		b, err := json.Marshal(s)
@@ -139,7 +143,8 @@ func (s *stats) StatsHandler(w http.ResponseWriter, r *http.Request) {
 	render(w, r, statsTemplate, nil)
 }
 
-func (s *stats) Start() error {
+//Start ...
+func (s *Stats) Start() error {
 	s.Lock()
 	defer s.Unlock()
 
@@ -153,7 +158,8 @@ func (s *stats) Start() error {
 	return nil
 }
 
-func (s *stats) Stop() error {
+//Stop ...
+func (s *Stats) Stop() error {
 	s.Lock()
 	defer s.Unlock()
 
@@ -166,11 +172,12 @@ func (s *stats) Stop() error {
 	return nil
 }
 
-func New() *stats {
+//New stats...
+func New() *Stats {
 	var mstat runtime.MemStats
 	runtime.ReadMemStats(&mstat)
 
-	return &stats{
+	return &Stats{
 		Threads: runtime.NumGoroutine(),
 		Memory:  fmt.Sprintf("%.2fmb", float64(mstat.Alloc)/float64(1024*1024)),
 		GC:      fmt.Sprintf("%.3fms", float64(mstat.PauseTotalNs)/(1000*1000)),
