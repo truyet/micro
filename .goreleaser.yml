@@ -1,4 +1,4 @@
-project_name: micro-api
+project_name: x-gateway
 release:
   github:
     owner: micro-china

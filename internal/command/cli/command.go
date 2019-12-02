@@ -165,6 +165,7 @@ func callContext(c *cli.Context) context.Context {
 	return metadata.NewContext(context.Background(), callMD)
 }
 
+//Publish for cli
 func Publish(c *cli.Context, args []string) error {
 	if len(args) < 2 {
 		return errors.New("require topic and message e.g micro publish event '{\"hello\": \"world\"}'")
@@ -193,6 +194,7 @@ func Publish(c *cli.Context, args []string) error {
 	return cl.Publish(ctx, m)
 }
 
+//CallService for cli
 func CallService(c *cli.Context, args []string) ([]byte, error) {
 	if len(args) < 2 {
 		return nil, errors.New(`require service and endpoint e.g micro call greeeter Say.Hello '{"name": "john"}'`)
@@ -257,6 +259,7 @@ func CallService(c *cli.Context, args []string) ([]byte, error) {
 	return response, nil
 }
 
+//QueryHealth for cli
 func QueryHealth(c *cli.Context, args []string) ([]byte, error) {
 	if len(args) == 0 {
 		return nil, errors.New("require service name")

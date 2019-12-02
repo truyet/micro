@@ -133,6 +133,7 @@ func Flags() []cli.Flag {
 	}
 }
 
+//Commands ...
 func Commands(options ...micro.Option) []cli.Command {
 	command := []cli.Command{
 		{

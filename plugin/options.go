@@ -13,6 +13,7 @@ type Options struct {
 	Init     func(*cli.Context) error
 }
 
+// Option for plugin
 type Option func(o *Options)
 
 // WithFlag adds flags to a plugin

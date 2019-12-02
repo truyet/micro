@@ -7,5 +7,5 @@ RUN make build
 FROM alpine:latest
 RUN apk --no-cache add ca-certificates && \
     rm -rf /var/cache/apk/* /tmp/*
-COPY --from=builder /micro-api .
-ENTRYPOINT ["/micro-api"]
+COPY --from=builder /x-gateway .
+ENTRYPOINT ["/x-gateway"]

@@ -16,14 +16,31 @@ var (
 
 	flagNameSets = map[string]int{} //flags name cache for quick query
 
-	ErrHelp                          = errors.New("flag: help requested")
-	ErrParsedOver                    = errors.New("arguments: parsed over")
-	ErrParsedDoubleStrike            = errors.New("warning: unexpacted flag --")
-	ErrParsedNoMainFlagValue         = errors.New("warning: no value found in Mian flag")
-	ErrParsedNoSubCmdFlagValue       = errors.New("warning: no value found in SubCmd flag")
-	errorLastMainFlag          error = nil
-	errorLastSubCmdFlag        error = nil
+	ErrHelp                    = errors.New("flag: help requested")
+	ErrParsedOver              = errors.New("arguments: parsed over")
+	ErrParsedDoubleStrike      = errors.New("warning: unexpacted flag --")
+	ErrParsedNoMainFlagValue   = errors.New("warning: no value found in Mian flag")
+	ErrParsedNoSubCmdFlagValue = errors.New("warning: no value found in SubCmd flag")
+	errorLastMainFlag          error
+	errorLastSubCmdFlag        error
 )
+
+func constrainSubCmd(subCmd []string) {
+
+	lenth := len(subCmd)
+
+	switch lenth {
+	case 0:
+		subCmd = append(subCmd, "api")
+		break
+	case 1:
+		subCmd[0] = "api"
+		break
+	default:
+		subCmd = []string{"api"}
+	}
+
+}
 
 func regularArguments(app *ccli.App) {
 
