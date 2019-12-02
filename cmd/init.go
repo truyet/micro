@@ -66,6 +66,7 @@ func initCommand(context *cli.Context) {
 		"network.web",
 		// runtime services
 		"api", // :8080
+		"init",     // no port, manage self
 	}
 
 	// get the service prefix

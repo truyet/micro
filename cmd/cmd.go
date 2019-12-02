@@ -12,6 +12,7 @@ import (
 	gorun "github.com/micro/go-micro/runtime"
 	"github.com/micro/go-micro/util/log"
 	"github.com/micro/micro/api"
+	"github.com/micro/micro/debug"
 	"github.com/micro/micro/plugin"
 	"github.com/micro/micro/plugin/build"
 	"github.com/micro/micro/runtime"
@@ -183,6 +184,7 @@ func Setup(app *ccli.App, options ...micro.Option) {
 	// Add the various commands
 	app.Commands = append(app.Commands, api.Commands(options...)...)
 	app.Commands = append(app.Commands, runtime.Commands(options...)...)
+	app.Commands = append(app.Commands, debug.Commands(options...)...)
 	app.Commands = append(app.Commands, token.Commands()...)
 	app.Commands = append(app.Commands, build.Commands()...)
 
