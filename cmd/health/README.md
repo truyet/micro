@@ -11,7 +11,7 @@ Every go-micro service exposes `Debug.Health`. We can use this for liveness chec
 ### Install
 
 ```
-go get github.com/micro-community/micro/cmd/health
+go get github.com/micro-community/micro-api/cmd/health
 ```
 
 or
