@@ -1,4 +1,4 @@
-# Micro  API-Gateway
+# Overview
 
 [micro api](https://micro.mu/docs/api.html)是micro中基于go-micro的API网关。
 
@@ -6,7 +6,7 @@
 
 ![MICRO-API](https://github.com/micro-in-cn/x-gateway/raw/master/docs/micro-api.png)
 
-## Overview
+## 注意事项
 
 注意China go mod加速问题：[官方讨论](https://github.com/golang/go/issues/31755)
 
@@ -29,11 +29,10 @@ go env -w GOPROXY=https://proxy.golang.org,direct
 go env -w GOPROXY=https://athens.azurefd.net,direct
 go env -w GOPROXY=https://mirrors.aliyun.com/goproxy,direct
 go env -w GOPROXY=https://mirrors.aliyun.com/goproxy,https://goproxy.cn,https://goproxy.io,https://athens.azurefd.net,direct
+//选一个SUMDB
 go env -w GOSUMDB=sum.golang.org //可选
 go env -w GOSUMDB=sum.golang.google.cn //可选
 ```
-
-
 
 ## Usage
 

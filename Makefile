@@ -1,8 +1,8 @@
-NAME=micro
-IMAGE_NAME=micro/$(NAME)
+NAME=x-gateway
+IMAGE_NAME=docker.pkg.github.com/micro-community/$(NAME)
 GIT_COMMIT=$(shell git rev-parse --short HEAD)
 GIT_TAG=$(shell git describe --abbrev=0 --tags --always --match "v*")
-GIT_IMPORT=github.com/micro/micro/cmd
+GIT_IMPORT=github.com/micro-community/micro/cmd
 CGO_ENABLED=0
 BUILD_DATE=$(shell date +%s)
 LDFLAGS=-X $(GIT_IMPORT).GitCommit=$(GIT_COMMIT) -X $(GIT_IMPORT).GitTag=$(GIT_TAG) -X $(GIT_IMPORT).BuildDate=$(BUILD_DATE)
@@ -14,8 +14,10 @@ vendor:
 	go mod vendor
 
 build:
-	go get
 	go build -a -installsuffix cgo -ldflags "-w ${LDFLAGS}" -o $(NAME) ./*.go
+
+buildw:
+	go build -a -installsuffix cgo -ldflags "-w ${LDFLAGS}" -o $(NAME).exe ./*.go
 
 docker:
 	docker build -t $(IMAGE_NAME):$(IMAGE_TAG) .
@@ -30,6 +32,6 @@ test: vet
 	go test -v ./...
 
 clean:
-	rm -rf ./micro
+	rm -rf ./x-gateway
 
-.PHONY: build clean vet test docker
+.PHONY: buildw build clean vet test docker
