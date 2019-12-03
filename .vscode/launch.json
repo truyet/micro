@@ -21,7 +21,7 @@
                 "--auto_update=true",
                 "--runtime",
                 "kubernetes",
-                "api",
+//                "api",
                 "--handler=rpc",
                 "--gateway_address=0.0.0.0",
                 "--registry",

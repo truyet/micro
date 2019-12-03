@@ -24,25 +24,29 @@ var (
 	ErrParsedNoSubCmdFlagValue = errors.New("warning: no value found in SubCmd flag")
 	errorLastMainFlag          error
 	errorLastSubCmdFlag        error
+
+	defaultAPICmd   = "api"
+	supportedWEBCmd = "web"
 )
 
-func constrainSubCmd(subCmd []string) {
+func constrainSubCmd(subCmd []string) string {
 
 	lenth := len(subCmd)
 
 	switch lenth {
 	case 0:
-		subCmd = append(subCmd, "api")
+		subCmd = append(subCmd, defaultAPICmd)
 		break
 	case 1:
-		if !strings.EqualFold(subCmd[0], "api") || !strings.EqualFold(subCmd[0], "web") {
-			subCmd[0] = "api"
+		if !strings.EqualFold(subCmd[0], defaultAPICmd) || !strings.EqualFold(subCmd[0], supportedWEBCmd) {
+			subCmd[0] = defaultAPICmd
 		}
 		break
 	default:
-		subCmd = []string{"api"}
+		subCmd = []string{defaultAPICmd}
 	}
 
+	return subCmd[0]
 }
 
 func regularArguments(app *ccli.App) {
@@ -69,7 +73,7 @@ func regularArguments(app *ccli.App) {
 	var newArgs []string
 	newArgs = append(newArgs, os.Args[0])
 	newArgs = append(newArgs, mainFlags...)
-	newArgs = append(newArgs, subCmd...)
+	newArgs = append(newArgs, constrainSubCmd(subCmd))
 	newArgs = append(newArgs, subCmdFlags...)
 
 	os.Args = newArgs
