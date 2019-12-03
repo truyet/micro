@@ -4,6 +4,7 @@ import (
 	"net/http"
 )
 
+//WrapWriter of response
 type WrapWriter struct {
 	StatusCode  int
 	Size        int64
@@ -12,6 +13,7 @@ type WrapWriter struct {
 	http.ResponseWriter
 }
 
+//WriteHeader for response
 func (ww *WrapWriter) WriteHeader(statusCode int) {
 	ww.wroteHeader = true
 	ww.StatusCode = statusCode

@@ -26,14 +26,17 @@ func init() {
 	watchers = make(map[string]persist.Watcher)
 }
 
+//RegisterAdapter of auth
 func RegisterAdapter(key string, a persist.Adapter) {
 	adapters[key] = a
 }
 
+//RegisterWatcher of auth
 func RegisterWatcher(key string, w persist.Watcher) {
 	watchers[key] = w
 }
 
+//Auth for micro
 type Auth struct {
 	options Options
 
@@ -105,6 +108,7 @@ func (a *Auth) handler(h http.Handler) http.Handler {
 	})
 }
 
+//NewPlugin for auth
 func NewPlugin(opts ...Option) plugin.Plugin {
 	options := newOptions(opts...)
 
@@ -113,10 +117,10 @@ func NewPlugin(opts ...Option) plugin.Plugin {
 	}
 
 	var egAdapter, egWatcher []string
-	for k, _ := range adapters {
+	for k := range adapters {
 		egAdapter = append(egAdapter, k)
 	}
-	for k, _ := range watchers {
+	for k := range watchers {
 		egWatcher = append(egWatcher, k)
 	}
 

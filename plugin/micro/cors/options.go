@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+//Options of cors
 type Options struct {
 	allowMethods     []string
 	exposeHeaders    []string
@@ -14,6 +15,7 @@ type Options struct {
 	useRsPkg bool
 }
 
+//Option of cors
 type Option func(*Options)
 
 func newOptions(opts ...Option) Options {
@@ -29,30 +31,35 @@ func newOptions(opts ...Option) Options {
 	return opt
 }
 
+//WithAllowMethods of cors
 func WithAllowMethods(methods ...string) Option {
 	return func(o *Options) {
 		o.allowMethods = convert(methods, strings.ToUpper)
 	}
 }
 
+//WithExposeHeaders of cors
 func WithExposeHeaders(headers ...string) Option {
 	return func(o *Options) {
 		o.exposeHeaders = convert(headers, http.CanonicalHeaderKey)
 	}
 }
 
+//WithAllowCredentials of cors
 func WithAllowCredentials(allow bool) Option {
 	return func(o *Options) {
 		o.allowCredentials = allow
 	}
 }
 
+//WithMaxAge of cors
 func WithMaxAge(maxAge int) Option {
 	return func(o *Options) {
 		o.maxAge = maxAge
 	}
 }
 
+//WithUseRsPkg of cors
 func WithUseRsPkg(useRs bool) Option {
 	return func(o *Options) {
 		o.useRsPkg = useRs

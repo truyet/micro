@@ -100,6 +100,7 @@ func newPlugin(options Options) plugin.Plugin {
 	)
 }
 
+//NewPlugin for cors
 func NewPlugin(opts ...Option) plugin.Plugin {
 	options := newOptions(opts...)
 	if options.useRsPkg {

@@ -12,16 +12,18 @@ import (
 	"github.com/micro/micro/plugin/micro/util/response"
 )
 
+//DefObjectives of prometheus
 var (
 	DefObjectives = map[float64]float64{0.5: 0.05, 0.9: 0.01, 0.99: 0.001}
 )
 
+//Prometheus for metircs
 type Prometheus struct {
 	options *Options
 }
 
-// RequestSize returns the size of request object.
-func RequestSize(r *http.Request) float64 {
+// Size returns the size of request object.
+func Size(r *http.Request) float64 {
 	size := 0
 	if r.URL != nil {
 		size = len(r.URL.String())
@@ -141,7 +143,7 @@ func (p *Prometheus) handler(h http.Handler) http.Handler {
 		ww := response.WrapWriter{ResponseWriter: w}
 		h.ServeHTTP(&ww, r)
 
-		reqSizeSummary.WithLabelValues(values...).Observe(float64(request.RequestSize(r)))
+		reqSizeSummary.WithLabelValues(values...).Observe(float64(request.Size(r)))
 		respSizeSummary.WithLabelValues(values...).Observe(float64(ww.Size))
 		reqTotalCounter.WithLabelValues(r.Host, strconv.Itoa(ww.StatusCode)).Inc()
 	})

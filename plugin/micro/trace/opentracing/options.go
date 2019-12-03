@@ -7,6 +7,7 @@ import (
 	"github.com/micro/micro/plugin/micro/util/response"
 )
 
+//Options of opentracing
 type Options struct {
 	tracer opentracing.Tracer
 
@@ -16,6 +17,7 @@ type Options struct {
 	autoStart bool
 }
 
+//Option of tace
 type Option func(o *Options)
 
 func newOptions(opts ...Option) Options {
@@ -33,24 +35,28 @@ func newOptions(opts ...Option) Options {
 	return opt
 }
 
+//WithTracer of opentracing
 func WithTracer(tracer opentracing.Tracer) Option {
 	return func(o *Options) {
 		o.tracer = tracer
 	}
 }
 
+//WithResponseHandler of opentracing
 func WithResponseHandler(handler response.Handler) Option {
 	return func(o *Options) {
 		o.responseHandler = handler
 	}
 }
 
+//WithSkipperFunc of opentracing
 func WithSkipperFunc(skipperFunc request.SkipperFunc) Option {
 	return func(o *Options) {
 		o.skipperFunc = skipperFunc
 	}
 }
 
+//WithAutoStart of opentracing
 func WithAutoStart(auto bool) Option {
 	return func(o *Options) {
 		o.autoStart = auto

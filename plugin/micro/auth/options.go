@@ -5,11 +5,13 @@ import (
 	"github.com/micro/micro/plugin/micro/util/response"
 )
 
+//Options of auth
 type Options struct {
 	responseHandler response.Handler
 	skipperFunc     request.SkipperFunc
 }
 
+//Option of auth
 type Option func(o *Options)
 
 func newOptions(opts ...Option) Options {
@@ -25,12 +27,14 @@ func newOptions(opts ...Option) Options {
 	return opt
 }
 
+//WithResponseHandler of auth
 func WithResponseHandler(handler response.Handler) Option {
 	return func(o *Options) {
 		o.responseHandler = handler
 	}
 }
 
+//WithSkipperFunc of auth
 func WithSkipperFunc(skipperFunc request.SkipperFunc) Option {
 	return func(o *Options) {
 		o.skipperFunc = skipperFunc

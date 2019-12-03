@@ -4,8 +4,8 @@ import (
 	"net/http"
 )
 
-//RequestSize returns the size of request object.
-func RequestSize(r *http.Request) float64 {
+//Size returns the size of request object.
+func Size(r *http.Request) float64 {
 	size := 0
 	if r.URL != nil {
 		size = len(r.URL.String())

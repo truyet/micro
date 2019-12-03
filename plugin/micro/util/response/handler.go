@@ -6,8 +6,10 @@ import (
 	"github.com/micro/go-micro/errors"
 )
 
+//Handler for http
 type Handler func(w http.ResponseWriter, r *http.Request, err error)
 
+//DefaultResponseHandler of http
 func DefaultResponseHandler(w http.ResponseWriter, r *http.Request, err error) {
 	mErr, ok := err.(*errors.Error)
 	if !ok {

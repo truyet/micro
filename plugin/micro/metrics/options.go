@@ -4,6 +4,7 @@ import (
 	"github.com/micro/micro/plugin/micro/util/request"
 )
 
+//Options of metric
 type Options struct {
 	namespace string
 	subsystem string
@@ -11,6 +12,7 @@ type Options struct {
 	skipperFunc request.SkipperFunc
 }
 
+//Option of metric
 type Option func(o *Options)
 
 func newOptions(opts ...Option) Options {
@@ -27,18 +29,21 @@ func newOptions(opts ...Option) Options {
 	return opt
 }
 
+//WithNamespace of metric
 func WithNamespace(namespace string) Option {
 	return func(o *Options) {
 		o.namespace = namespace
 	}
 }
 
+//WithSubsystem of metric
 func WithSubsystem(subsystem string) Option {
 	return func(o *Options) {
 		o.subsystem = subsystem
 	}
 }
 
+//WithSkipperFunc of metric
 func WithSkipperFunc(skipperFunc request.SkipperFunc) Option {
 	return func(o *Options) {
 		o.skipperFunc = skipperFunc

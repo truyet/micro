@@ -13,7 +13,7 @@ import (
 	"github.com/micro/go-micro/metadata"
 )
 
-//ACMEHosts ...
+//ACMEHosts of helper...
 func ACMEHosts(ctx *cli.Context) []string {
 	var hosts []string
 	for _, host := range strings.Split(ctx.GlobalString("acme_hosts"), ",") {
@@ -24,7 +24,7 @@ func ACMEHosts(ctx *cli.Context) []string {
 	return hosts
 }
 
-//RequestToContext ...
+//RequestToContext of helper...
 func RequestToContext(r *http.Request) context.Context {
 	ctx := context.Background()
 	md := make(metadata.Metadata)
@@ -70,6 +70,7 @@ func TLSConfig(ctx *cli.Context) (*tls.Config, error) {
 
 	return nil, errors.New("TLS certificate and key files not specified")
 }
+
 //ServeCORS ...
 func ServeCORS(w http.ResponseWriter, r *http.Request) {
 	set := func(w http.ResponseWriter, k, v string) {

@@ -26,7 +26,7 @@ func StartSpanFromHeader(header http.Header, tracer opentracing.Tracer, name str
 	return sp, nil
 }
 
-// 如果没在context中没有找到span，返回nil
+//SpanFromHeader 如果没在context中没有找到span，返回nil
 func SpanFromHeader(header http.Header, tracer opentracing.Tracer, name string, opts ...opentracing.StartSpanOption) (opentracing.Span, error) {
 
 	// Find parent span.
@@ -86,6 +86,7 @@ func newPlugin(opts ...Option) plugin.Plugin {
 	)
 }
 
+//NewPlugin of opentracing
 func NewPlugin(opts ...Option) plugin.Plugin {
 	return newPlugin(opts...)
 }
