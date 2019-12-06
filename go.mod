@@ -7,7 +7,6 @@ require (
 	github.com/codahale/hdrhistogram v0.0.0-20161010025455-3a0bb77429bd // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/eknkc/basex v1.0.0 // indirect
-	github.com/fsnotify/fsnotify v1.4.7
 	github.com/go-acme/lego/v3 v3.2.0
 	github.com/golang/protobuf v1.3.2
 	github.com/gorilla/mux v1.7.3

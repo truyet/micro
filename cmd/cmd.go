@@ -15,7 +15,6 @@ import (
 	"github.com/micro/micro/debug"
 	"github.com/micro/micro/plugin"
 	"github.com/micro/micro/plugin/build"
-	"github.com/micro/micro/runtime"
 )
 
 //App Info Vars
@@ -182,7 +181,6 @@ func Init(options ...micro.Option) {
 func Setup(app *ccli.App, options ...micro.Option) {
 	// Add the various commands
 	app.Commands = append(app.Commands, api.Commands(options...)...)
-	app.Commands = append(app.Commands, runtime.Commands(options...)...)
 	app.Commands = append(app.Commands, debug.Commands(options...)...)
 	app.Commands = append(app.Commands, build.Commands()...)
 
@@ -229,7 +227,6 @@ func Setup(app *ccli.App, options ...micro.Option) {
 		log.Info("Loading core services")
 
 		services := []string{
-			"runtime", // :8088
 			"broker",  // :8001
 			"api",     // :8080
 		}
