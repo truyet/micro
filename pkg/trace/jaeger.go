@@ -1,4 +1,4 @@
-package opentracing
+package tace
 
 import (
 	"io"
@@ -10,6 +10,7 @@ import (
 	"github.com/uber/jaeger-lib/metrics"
 )
 
+//NewJaegerTracer of tracing
 func NewJaegerTracer(serviceName, addr string) (opentracing.Tracer, io.Closer, error) {
 	// Sample configuration for testing. Use constant sampling to sample every trace
 	// and enable LogSpan to log every span via configured Logger.

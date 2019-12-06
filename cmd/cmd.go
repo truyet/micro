@@ -16,7 +16,6 @@ import (
 	"github.com/micro/micro/plugin"
 	"github.com/micro/micro/plugin/build"
 	"github.com/micro/micro/runtime"
-	"github.com/micro/micro/token"
 )
 
 //App Info Vars
@@ -185,7 +184,6 @@ func Setup(app *ccli.App, options ...micro.Option) {
 	app.Commands = append(app.Commands, api.Commands(options...)...)
 	app.Commands = append(app.Commands, runtime.Commands(options...)...)
 	app.Commands = append(app.Commands, debug.Commands(options...)...)
-	app.Commands = append(app.Commands, token.Commands()...)
 	app.Commands = append(app.Commands, build.Commands()...)
 
 	// add the init command for our internal operator
@@ -225,11 +223,6 @@ func Setup(app *ccli.App, options ...micro.Option) {
 				// set the resolver to use https://micro.mu/network
 				env = append(env, "MICRO_NETWORK_RESOLVER=http")
 				log.Log("Setting default network resolver")
-			}
-			if v := os.Getenv("MICRO_NETWORK_TOKEN"); len(v) == 0 {
-				// set the network token
-				env = append(env, "MICRO_NETWORK_TOKEN=micro.mu")
-				log.Log("Setting default network token")
 			}
 		}
 
