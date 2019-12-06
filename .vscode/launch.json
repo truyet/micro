@@ -17,15 +17,15 @@
                 "MICRO_NAMESPACE":"=com.srv.api", //  /foo HTTP/1.1 routes to service name come.srv.api.foo.
             },
             "args": [
-                "--server_name=apigw",
-                "--auto_update=true",
-                "--runtime",
-                "kubernetes",
-//                "api",
-                "--handler=rpc",
-                "--gateway_address=0.0.0.0",
-                "--registry",
-                "mdns"
+//                 "--server_name=apigw",
+//                 "--auto_update=true",
+//                 "--runtime",
+//                 "kubernetes",
+// //                "api",
+//                 "--handler=rpc",
+//                 "--gateway_address=0.0.0.0",
+//                 "--registry",
+//                 "mdns"
 //                "--namespace=micro.cn",
                 // "--broker=nats",
                 // "--broker_address=127.0.0.1:4222",
