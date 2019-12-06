@@ -5,8 +5,8 @@ import (
 	"net/http"
 	fileadapter	"github.com/casbin/casbin/v2/persist/file-adapter"
 	//"github.com/micro/go-micro/util/log"
-	"github.com/micro/micro/plugin/micro/auth"
-	"github.com/micro/micro/plugin/micro/util/response"
+	"github.com/micro/micro/pkg/micro/auth"
+	"github.com/micro/micro/pkg/micro/util/response"
 	"github.com/micro/micro/api"
 )
 

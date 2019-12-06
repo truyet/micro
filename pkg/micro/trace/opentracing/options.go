@@ -3,8 +3,8 @@ package opentracing
 import (
 	"github.com/opentracing/opentracing-go"
 
-	"github.com/micro/micro/plugin/micro/util/request"
-	"github.com/micro/micro/plugin/micro/util/response"
+	"github.com/micro/micro/pkg/micro/util/request"
+	"github.com/micro/micro/pkg/micro/util/response"
 )
 
 //Options of opentracing

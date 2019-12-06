@@ -7,9 +7,8 @@ import (
 	"github.com/micro/micro/plugin"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-
-	"github.com/micro/micro/plugin/micro/util/request"
-	"github.com/micro/micro/plugin/micro/util/response"
+	"github.com/micro/micro/pkg/micro/util/request"
+	"github.com/micro/micro/pkg/micro/util/response"
 )
 
 //DefObjectives of prometheus
