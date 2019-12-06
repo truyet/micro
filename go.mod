@@ -26,6 +26,7 @@ require (
 	github.com/uber/jaeger-client-go v2.20.1+incompatible
 	github.com/uber/jaeger-lib v2.2.0+incompatible
 	golang.org/x/net v0.0.0-20191109021931-daa7c04131f5
+	golang.org/x/time v0.0.0-20190921001708-c4c64cad1fd0
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )

@@ -3,11 +3,17 @@ package main
 import (
 	"io"
 	"net/http"
-	fileadapter	"github.com/casbin/casbin/v2/persist/file-adapter"
-	//"github.com/micro/go-micro/util/log"
-	"github.com/micro/micro/pkg/micro/auth"
-	"github.com/micro/micro/pkg/micro/util/response"
+	"time"
+
+	fileadapter "github.com/casbin/casbin/v2/persist/file-adapter"
+	"github.com/micro/go-micro/util/log"
 	"github.com/micro/micro/api"
+	"github.com/micro/micro/pkg/micro/auth"
+	"github.com/micro/micro/pkg/micro/metrics"
+	"github.com/micro/micro/pkg/micro/opentracing"
+	"github.com/micro/micro/pkg/micro/util/response"
+	tracer "github.com/micro/micro/pkg/trace"
+	"golang.org/x/time/rate"
 )
 
 var (
@@ -25,14 +31,14 @@ func cleanWork() error {
 func init() {
 	// Auth
 	initAuth()
+	initMetrics()
+	initTrace()
 }
-
 
 func initAuth() {
 
 	casb := fileadapter.NewAdapter("./conf/casbin_policy.csv")
 	auth.RegisterAdapter("default", casb)
-
 
 	authPlugin := auth.NewPlugin(
 		auth.WithResponseHandler(response.DefaultResponseHandler),
@@ -41,5 +47,36 @@ func initAuth() {
 		}),
 	)
 	api.Register(authPlugin)
+
+}
+
+func initMetrics() {
+	api.Register(metrics.NewPlugin(
+		metrics.WithNamespace("x-gateway"),
+		metrics.WithSubsystem(""),
+		metrics.WithSkipperFunc(func(r *http.Request) bool {
+			return false
+		}),
+	))
+}
+
+// Tracing仅由Gateway控制，在下游服务中仅在有Tracing时启动
+func initTrace() {
+	apiTracer, apiCloser, err := tracer.NewJaegerTracer("go.micro.api", "127.0.0.1:6831")
+	if err != nil {
+		log.Fatalf("opentracing tracer create error:%v", err)
+	}
+	limiter := rate.NewLimiter(rate.Every(time.Millisecond*100), 10)
+	apiTracerCloser = apiCloser
+	api.Register(opentracing.NewPlugin(
+		opentracing.WithTracer(apiTracer),
+		opentracing.WithSkipperFunc(func(r *http.Request) bool {
+			// 采样频率控制，根据需要细分Host、Path等分别控制
+			if !limiter.Allow() {
+				return true
+			}
+			return false
+		}),
+	))
 
 }
