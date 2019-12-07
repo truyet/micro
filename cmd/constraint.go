@@ -38,7 +38,12 @@ func constrainSubCmd(subCmd []string) string {
 		subCmd = append(subCmd, defaultAPICmd)
 		break
 	case 1:
-		if !strings.EqualFold(subCmd[0], defaultAPICmd) || !strings.EqualFold(subCmd[0], supportedWEBCmd) {
+		if !(strings.EqualFold(subCmd[0], defaultAPICmd) ||
+			strings.EqualFold(subCmd[0], supportedWEBCmd) ||
+			strings.EqualFold(subCmd[0], "version") ||
+			strings.EqualFold(subCmd[0], "v") ||
+			strings.EqualFold(subCmd[0], "help") ||
+			strings.EqualFold(subCmd[0], "h")) {
 			subCmd[0] = defaultAPICmd
 		}
 		break

@@ -50,9 +50,10 @@ func initAuth() {
 
 }
 
+//(b >= 'a' && b <= 'z') || (b >= 'A' && b <= 'Z') || b == '_' || b == ':' || (b >= '0' && b <= '9' && i > 0)
 func initMetrics() {
 	api.Register(metrics.NewPlugin(
-		metrics.WithNamespace("x-gateway"),
+		metrics.WithNamespace("xgateway"), //only [a-zA-Z0-9:_]
 		metrics.WithSubsystem(""),
 		metrics.WithSkipperFunc(func(r *http.Request) bool {
 			return false
@@ -62,7 +63,7 @@ func initMetrics() {
 
 // Tracing仅由Gateway控制，在下游服务中仅在有Tracing时启动
 func initTrace() {
-	apiTracer, apiCloser, err := tracer.NewJaegerTracer("go.micro.api", "127.0.0.1:6831")
+	apiTracer, apiCloser, err := tracer.NewJaegerTracer("go.micro.x-gateway", "127.0.0.1:6831")
 	if err != nil {
 		log.Fatalf("opentracing tracer create error:%v", err)
 	}
