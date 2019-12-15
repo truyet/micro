@@ -228,6 +228,7 @@ func Setup(app *ccli.App, options ...micro.Option) {
 
 		services := []string{
 			"broker",  // :8001
+			"debug",    // :????
 			"api",     // :8080
 		}
 

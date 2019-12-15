@@ -64,7 +64,9 @@ func initCommand(context *cli.Context) {
 		"network.api",
 		"network.dns",
 		"network.web",
+		"debug.web",
 		// runtime services
+		"debug",    // :????
 		"api", // :8080
 		"init",     // no port, manage self
 	}

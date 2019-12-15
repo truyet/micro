@@ -2,47 +2,40 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: default
-  name: micro-router
+  name: micro-debug-web
   labels:
     micro: runtime
-    name: micro-router
-  annotations:
-    name: "go.micro.router"
-    version: "latest"
-    source: "github.com/micro/micro"
-    owner: "micro"
-    group: "micro"
+    name: micro-debug-web
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: micro-router
+      name: micro-debug-web
       micro: runtime
   template:
     metadata:
       labels:
-        name: micro-router
+        name: micro-debug-web
         micro: runtime
     spec:
       containers:
-      - name: router
+      - name: micro-debug-web
         env:
+        - name: MICRO_LOG_LEVEL
+          value: "debug"
         - name: MICRO_BROKER
           value: "nats"
         - name: MICRO_BROKER_ADDRESS
           value: "nats-cluster"
-        - name: MICRO_GATEWAY_ADDRESS
-          value: "micro-gateway:8080"
         - name: MICRO_REGISTRY
           value: "etcd"
         - name: MICRO_REGISTRY_ADDRESS
           value: "etcd-cluster-client"
-        - name: MICRO_ENABLE_ACME
-          value: "true"
-        args:
-        - router
+        - name: MICRO_NETDATA_URL
+          value: "http://netdata:19999"
         image: micro/micro
         imagePullPolicy: Always
-        ports:
-        - containerPort: 8084
-          name: router-port
+        command:
+        - /micro
+        - debug
+        - web

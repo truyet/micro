@@ -8,7 +8,9 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"os"
+	"strings"
 
+	"github.com/gorilla/mux"
 	"github.com/micro/cli"
 	"github.com/micro/go-micro/web"
 )
@@ -33,13 +35,28 @@ func Run(ctx *cli.Context) {
 	}
 	netdata := httputil.NewSingleHostReverseProxy(u)
 
+	r := mux.NewRouter()
+	r.HandleFunc("/", renderDashboard)
+	r.HandleFunc("/service/{service}", renderServiceDashboard)
+
+	wrapper := &netdataWrapper{
+		netdataproxy: netdata.ServeHTTP,
+	}
 	service := web.NewService(opts...)
 	service.HandleFunc("/dashboard.js", netdata.ServeHTTP)
 	service.HandleFunc("/dashboard.css", netdata.ServeHTTP)
+	service.HandleFunc("/dashboard.slate.css", netdata.ServeHTTP)
+	service.HandleFunc("/dashboard_info.js", netdata.ServeHTTP)
+	service.HandleFunc("/main.css", netdata.ServeHTTP)
+	service.HandleFunc("/main.js", netdata.ServeHTTP)
+	service.HandleFunc("/images/", netdata.ServeHTTP)
 	service.HandleFunc("/lib/", netdata.ServeHTTP)
 	service.HandleFunc("/css/", netdata.ServeHTTP)
 	service.HandleFunc("/api/", netdata.ServeHTTP)
-	service.HandleFunc("/", renderDashboard)
+	service.HandleFunc("/", r.ServeHTTP)
+	service.HandleFunc("/infra", http.RedirectHandler("/debug/infra/", http.StatusTemporaryRedirect).ServeHTTP)
+	service.HandleFunc("/infra/", wrapper.proxyNetdata)
+
 	service.Run()
 }
 
@@ -49,4 +66,24 @@ func renderDashboard(w http.ResponseWriter, r *http.Request) {
 	} else {
 		dashboardTemplate.Execute(w, nil)
 	}
+}
+
+func renderServiceDashboard(w http.ResponseWriter, r *http.Request) {
+	v := mux.Vars(r)
+	service, found := v["service"]
+	if !found {
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprintf(w, "Service not found\n")
+	} else {
+		dashboardTemplate.Execute(w, struct{ Service string }{Service: strings.ReplaceAll(service, ".", "_")})
+	}
+}
+
+type netdataWrapper struct {
+	netdataproxy func(http.ResponseWriter, *http.Request)
+}
+
+func (n *netdataWrapper) proxyNetdata(w http.ResponseWriter, r *http.Request) {
+	r.URL.Path = strings.TrimPrefix(r.URL.Path, "/infra")
+	n.netdataproxy(w, r)
 }

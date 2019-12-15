@@ -9,6 +9,12 @@ import (
 	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/debug/log"
 	dbg "github.com/micro/go-micro/debug/service"
+	ulog "github.com/micro/go-micro/util/log"
+	logHandler "github.com/micro/micro/debug/log/handler"
+	pblog "github.com/micro/micro/debug/log/proto"
+	"github.com/micro/micro/debug/stats"
+	statshandler "github.com/micro/micro/debug/stats/handler"
+	pbstats "github.com/micro/micro/debug/stats/proto"
 	"github.com/micro/micro/debug/web"
 )
 
@@ -25,7 +31,7 @@ var (
 )
 
 func getLogs(ctx *cli.Context, srvOpts ...micro.Option) {
-	log.Name("debug")
+	ulog.Name("debug")
 
 	// Init plugins
 	for _, p := range Plugins() {
@@ -40,7 +46,7 @@ func getLogs(ctx *cli.Context, srvOpts ...micro.Option) {
 
 	// must specify service name
 	if len(name) == 0 {
-		log.Fatal(LogsUsage)
+		ulog.Fatal(LogsUsage)
 	}
 
 	service := dbg.NewDebug(name)
@@ -63,7 +69,7 @@ func getLogs(ctx *cli.Context, srvOpts ...micro.Option) {
 
 	logs, err := service.Log(options...)
 	if err != nil {
-		log.Fatal(err)
+		ulog.Fatal(err)
 	}
 
 	for record := range logs {
@@ -72,7 +78,7 @@ func getLogs(ctx *cli.Context, srvOpts ...micro.Option) {
 }
 
 func run(ctx *cli.Context, srvOpts ...micro.Option) {
-	log.Name("debug")
+	ulog.Name("debug")
 
 	// Init plugins
 	for _, p := range Plugins() {
@@ -97,18 +103,30 @@ func run(ctx *cli.Context, srvOpts ...micro.Option) {
 	// new service
 	service := micro.NewService(srvOpts...)
 
+	done := make(chan bool)
+	defer close(done)
+
+	statsHandler, err := statshandler.New(done)
+	if err != nil {
+		ulog.Fatal(err)
+	}
+
+	// Register the stats handler
+	pbstats.RegisterStatsHandler(service.Server(), statsHandler)
+
+	// Register the logs handler
+	pblog.RegisterLogHandler(service.Server(), new(logHandler.Log))
+
 	// TODO: implement debug service for k8s cruft
 
 	// start debug service
 	if err := service.Run(); err != nil {
-		log.Errorf("error running service: %v", err)
+		ulog.Errorf("error running service: %v", err)
 	}
-
-	log.Infof("successfully stopped")
 }
 
-// Flags is shared flags so we don't have to continually re-add
-func Flags() []cli.Flag {
+// logFlags is shared flags so we don't have to continually re-add
+func logFlags() []cli.Flag {
 	return []cli.Flag{
 		cli.StringFlag{
 			Name:  "name",
@@ -166,12 +184,19 @@ func Commands(options ...micro.Option) []cli.Command {
 						web.Run(c)
 					},
 				},
+				cli.Command{
+					Name:  "stats",
+					Usage: "Start the debug stats scraper",
+					Action: func(c *cli.Context) {
+						stats.Run(c)
+					},
+				},
 			},
 		},
 		{
 			Name:  "logs",
 			Usage: "Get logs for a service",
-			Flags: Flags(),
+			Flags: logFlags(),
 			Action: func(ctx *cli.Context) {
 				getLogs(ctx, options...)
 			},
