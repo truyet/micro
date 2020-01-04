@@ -6,7 +6,7 @@ import (
 
 	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/util/log"
-	microplugin "github.com/micro/micro/debug/collector/micro"
+	plugin "github.com/micro/micro/debug/collector/micro"
 
 	"github.com/netdata/go-orchestrator"
 	"github.com/netdata/go-orchestrator/cli"
@@ -30,14 +30,19 @@ func main() {
 		micro.Version("latest"),
 	)
 
-	os.Args = append(os.Args[:1], os.Args[2:]...)
+	if len(os.Args) > 1 {
+		os.Args = append(os.Args[:1], os.Args[2:]...)
+	}
 
 	// Initialise service
 	service.Init()
-	microplugin.New().WithClient(service.Client()).Register()
+
 	go func() {
 		log.Fatal(service.Run())
 	}()
+
+	// register the new plugin
+	plugin.New(service.Client()).Register()
 
 	netdata := orchestrator.New()
 	netdata.Name = "micro.d"

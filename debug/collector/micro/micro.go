@@ -31,20 +31,14 @@ type Config struct{}
 // }
 
 // New creates the micro module with default values
-func New() *Micro {
+func New(c client.Client) *Micro {
 	return &Micro{
 		Config:   Config{},
 		services: make(map[string]bool),
 		indexes:  make(map[string]map[string]bool),
 		metrics:  make(map[string]int64),
-		client:   client.DefaultClient,
+		client:   c,
 	}
-}
-
-// WithClient sets the micro client
-func (m *Micro) WithClient(c client.Client) *Micro {
-	m.client = c
-	return m
 }
 
 // Register Registers with the orchestrator
@@ -127,37 +121,69 @@ func (m *Micro) Collect() map[string]int64 {
 }
 
 func (m *Micro) updateCharts(snapshots []*stats.Snapshot) error {
-	sort.Sort(sortableSnapshot(snapshots))
-
-	getIndex := func(s *stats.Snapshot) string {
-		if _, found := m.indexes[s.Service.Name]; !found {
-			m.indexes[s.Service.Name] = make(map[string]bool)
-		}
-		m.indexes[s.Service.Name][key(s)] = true
-		return strconv.Itoa(len(m.indexes[s.Service.Name]))
-	}
-
 	m.Lock()
 	defer m.Unlock()
 
-	for _, snap := range snapshots {
-		svc := key(snap)
+	// sort the snapshots
+	sort.Sort(sortableSnapshot(snapshots))
 
-		if _, found := m.services[svc]; !found {
-			m.services[svc] = true
+	// cleanup anything that does not exist
+	exists := make(map[string]string)
+
+	// check what services actually exist
+	for _, snap := range snapshots {
+		instance := key(snap)
+		if _, ok := m.services[instance]; ok {
+			exists[instance] = snap.Service.Name
+		}
+	}
+
+	// delete non existance instances of the service
+	for instance, _ := range m.services {
+		service, ok := exists[instance]
+		if ok {
+			continue
+		}
+
+		// delete from service instances
+		delete(m.services, instance)
+		// delete from saved indexes
+		instances, ok := m.indexes[service]
+		if !ok {
+			// delete the specific instance
+			delete(instances, instance)
+			// save the instances
+			m.indexes[service] = instances
+		}
+
+		// remove the dims
+		for _, ch := range charts {
+			id := fmt.Sprintf("%s_%s", instance, ch.ID)
+			ch.MarkDimRemove(id, true)
+		}
+	}
+
+	for _, snap := range snapshots {
+		instance := key(snap)
+
+		if _, found := m.services[instance]; !found {
+			m.services[instance] = true
+			idx := m.getIndex(snap)
 
 			for _, ch := range charts {
-				name := strings.TrimPrefix(snap.Service.Name, "go.micro.")
-				name = fmt.Sprintf("%s.%s", name, getIndex(snap))
-				id := fmt.Sprintf("%s_%s", svc, ch.ID)
+				prefix := strings.TrimPrefix(snap.Service.Name, "go.micro.")
+				name := fmt.Sprintf("%s.%s", prefix, idx)
+				id := fmt.Sprintf("%s_%s", key(snap), ch.ID)
 
-				if ch.ID == chartServiceGCRate {
+				switch ch.ID {
+				// rate charts for gc, requests, errors
+				case chartServiceGCRate, chartServiceRequests, chartServiceErrors:
 					ch.AddDim(&module.Dim{
 						ID:   id,
 						Name: name,
 						Algo: module.Incremental,
 					})
-				} else {
+				default:
 					ch.AddDim(&module.Dim{
 						ID:   id,
 						Name: name,
@@ -172,6 +198,15 @@ func (m *Micro) updateCharts(snapshots []*stats.Snapshot) error {
 	}
 
 	return nil
+}
+
+func (m *Micro) getIndex(s *stats.Snapshot) string {
+	// generates and saves an index
+	if _, found := m.indexes[s.Service.Name]; !found {
+		m.indexes[s.Service.Name] = make(map[string]bool)
+	}
+	m.indexes[s.Service.Name][key(s)] = true
+	return strconv.Itoa(len(m.indexes[s.Service.Name]) - 1)
 }
 
 // Collect contacts the Debug service to retrieve snapshots of stats
@@ -193,20 +228,27 @@ func (m *Micro) collect(ctx context.Context) error {
 	// Populate metrics map
 	m.Lock()
 	for _, s := range rsp.Stats {
-		k := key(s)
+		k := fmt.Sprintf("%s", key(s))
 		m.metrics[k+"_"+chartServiceStarted] = int64(s.Started)
 		m.metrics[k+"_"+chartServiceUptime] = int64(s.Uptime)
 		m.metrics[k+"_"+chartServiceMemory] = int64(s.Memory)
 		m.metrics[k+"_"+chartServiceThreads] = int64(s.Threads)
 		m.metrics[k+"_"+chartServiceGC] = int64(s.Gc)
 		m.metrics[k+"_"+chartServiceGCRate] = int64(s.Gc)
+		m.metrics[k+"_"+chartServiceRequests] = int64(s.Requests)
+		m.metrics[k+"_"+chartServiceErrors] = int64(s.Errors)
 	}
 	m.Unlock()
 	return nil
 }
 
+func format(v string) string {
+	return strings.ReplaceAll(v, ".", "_")
+}
+
 func key(s *stats.Snapshot) string {
-	return strings.ReplaceAll(s.Service.Node.Id+s.Service.Version, ".", "_")
+	// TODO: use version but in our indexing this fails
+	return format(s.Service.Node.Id + s.Service.Version)
 }
 
 type sortableSnapshot []*stats.Snapshot

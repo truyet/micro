@@ -3,13 +3,13 @@ package handler
 
 import (
 	"context"
-	"errors"
 	"sync"
 	"time"
 
 	"github.com/micro/go-micro/client"
 	"github.com/micro/go-micro/config/cmd"
 	debug "github.com/micro/go-micro/debug/service/proto"
+	"github.com/micro/go-micro/errors"
 	"github.com/micro/go-micro/registry"
 	"github.com/micro/go-micro/registry/cache"
 	"github.com/micro/go-micro/util/log"
@@ -26,6 +26,7 @@ func New(done <-chan bool) (*Stats, error) {
 	if err := s.scan(); err != nil {
 		return nil, err
 	}
+
 	s.Start(done)
 	return s, nil
 }
@@ -73,17 +74,17 @@ func (s *Stats) Read(ctx context.Context, req *stats.ReadRequest, rsp *stats.Rea
 }
 
 func (s *Stats) Write(ctx context.Context, req *stats.WriteRequest, rsp *stats.WriteResponse) error {
-	return errors.New("Not Implemented")
+	return errors.BadRequest("go.micro.debug.stats", "not implemented")
 }
 
 // Stream starts streaming stats
 func (s *Stats) Stream(ctx context.Context, req *stats.StreamRequest, rsp stats.Stats_StreamStream) error {
-	return errors.New("Not Implemented")
+	return errors.BadRequest("go.micro.debug.stats", "not implemented")
 }
 
 // Start Starts scraping other services until the provided channel is closed
 func (s *Stats) Start(done <-chan bool) {
-	go func(s *Stats) {
+	go func() {
 		for {
 			select {
 			case <-done:
@@ -93,19 +94,23 @@ func (s *Stats) Start(done <-chan bool) {
 				time.Sleep(time.Second)
 			}
 		}
-	}(s)
-	go func(s *Stats) {
-		rescan := time.NewTicker(10 * time.Second)
+	}()
+
+	go func() {
+		t := time.NewTicker(10 * time.Second)
+		defer t.Stop()
+
 		for {
 			select {
 			case <-done:
-				rescan.Stop()
 				return
-			case <-rescan.C:
-				s.scan()
+			case <-t.C:
+				if err := s.scan(); err != nil {
+					log.Debug(err)
+				}
 			}
 		}
-	}(s)
+	}()
 }
 
 func (s *Stats) scan() error {
@@ -168,10 +173,8 @@ func (s *Stats) scrape() {
 	var wg sync.WaitGroup
 
 	protocol := s.client.String()
-	transport := s.client.Options().Transport.String()
 
 	for _, svc := range services {
-
 		// Ignore nodeless and non mucp services
 		if len(svc.Nodes) == 0 {
 			continue
@@ -181,12 +184,10 @@ func (s *Stats) scrape() {
 			if node.Metadata["protocol"] != protocol {
 				continue
 			}
-			if node.Metadata["transport"] != transport {
-				continue
-			}
+
+			wg.Add(1)
 
 			go func(st *Stats, service *registry.Service, node *registry.Node) {
-				wg.Add(1)
 				defer wg.Done()
 
 				// create new context to cancel within a few seconds
@@ -210,17 +211,18 @@ func (s *Stats) scrape() {
 							Address: node.Address,
 						},
 					},
-					Started: int64(rsp.Started),
-					Uptime:  rsp.Uptime,
-					Memory:  rsp.Memory,
-					Threads: rsp.Threads,
-					Gc:      rsp.Gc,
+					Started:  int64(rsp.Started),
+					Uptime:   rsp.Uptime,
+					Memory:   rsp.Memory,
+					Threads:  rsp.Threads,
+					Gc:       rsp.Gc,
+					Requests: rsp.Requests,
+					Errors:   rsp.Errors,
 				}
 
 				mtx.Lock()
 				next = append(next, snap)
 				mtx.Unlock()
-
 			}(s, svc, node)
 		}
 	}

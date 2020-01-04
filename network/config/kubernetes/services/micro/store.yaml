@@ -2,31 +2,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: default
-  name: micro-debug
+  name: micro-store
   labels:
     micro: runtime
-    name: micro-debug
-  annotations:
-    name: "go.micro.debug"
-    version: "latest"
-    source: "github.com/micro/micro"
-    owner: "micro"
-    group: "micro"
-spec:
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: micro-debug
+      name: micro-store
       micro: runtime
   template:
     metadata:
       labels:
-        name: micro-debug
+        name: micro-store
         micro: runtime
     spec:
       containers:
-      - name: micro-debug
+      - name: micro-store
         env:
         - name: MICRO_LOG_LEVEL
           value: "debug"
@@ -38,8 +30,12 @@ spec:
           value: "etcd"
         - name: MICRO_REGISTRY_ADDRESS
           value: "etcd-cluster-client"
+        - name: MICRO_STORE_BACKEND
+          value: "cockroach"
+        - name: MICRO_STORE_NODES
+          value: "host=cockroachdb-public port=26257 sslmode=disable user=root"
         image: micro/micro
         imagePullPolicy: Always
         command:
         - /micro
-        - debug
+        - store
