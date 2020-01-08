@@ -25,7 +25,7 @@ require (
 	github.com/jonboulle/clockwork v0.1.0 // indirect
 	github.com/mattn/go-isatty v0.0.8 // indirect
 	github.com/micro/cli v0.2.0
-	github.com/micro/go-micro v1.18.1-0.20200103204353-df9055f69cbd
+	github.com/micro/go-micro v1.18.1-0.20200107183734-0b8ff3a8bb94
 	github.com/nats-io/nats-server/v2 v2.0.0 // indirect
 	github.com/netdata/go-orchestrator v0.0.0-20190905093727-c793edba0e8f
 	github.com/onsi/ginkgo v1.8.0 // indirect
