@@ -10,11 +10,9 @@ import (
 	"github.com/micro/go-micro/config/cmd"
 	gorun "github.com/micro/go-micro/runtime"
 	"github.com/micro/go-micro/util/log"
-
 	// include usage
-
-	"github.com/micro/micro/internal/update"
-	_ "github.com/micro/micro/internal/usage"
+	//"github.com/micro/micro/internal/update"
+	//_ "github.com/micro/micro/internal/usage"
 )
 
 var (
@@ -23,23 +21,17 @@ var (
 	Version string
 
 	// list of services managed
+	// services to manage
 	services = []string{
+		// network services
+		"network.api",
+		"network.dns",
+		"network.web",
+		"debug.web",
 		// runtime services
-		"network",  // :8085
-		"runtime",  // :8088
-		"registry", // :8000
-		"broker",   // :8001
-		"store",    // :8002
-		"tunnel",   // :8083
-		"router",   // :8084
-		"monitor",  // :????
-		"debug",    // :????
-		"proxy",    // :8081
-		"api",      // :8080
-		"web",      // :8082
-		"bot",      // :????
-		"store",    // :????
-		"init",     // no port, manage self
+		"debug", // :????
+		"api",   // :8080
+		"init",  // no port, manage self
 	}
 
 	// list of web apps
@@ -118,13 +110,13 @@ func Init(context *cli.Context) {
 	muRuntime := cmd.DefaultCmd.Options().Runtime
 
 	// Use default update notifier
-	notifier := update.NewNotifier(Version)
-	wrapped := initNotify(notifier, initServices)
+	//notifier := update.NewNotifier(Version)
+	//wrapped := initNotify(notifier, initServices)
 
 	// specify with a notifier that fires
 	// individual events for each service
 	options := []gorun.Option{
-		gorun.WithNotifier(wrapped),
+		//	gorun.WithNotifier(wrapped),
 		gorun.WithType("runtime"),
 	}
 	(*muRuntime).Init(options...)
@@ -202,7 +194,7 @@ func Run(context *cli.Context) {
 	// Use default update notifier
 	if context.GlobalBool("auto_update") {
 		options := []gorun.Option{
-			gorun.WithNotifier(update.NewNotifier(Version)),
+			//	gorun.WithNotifier(update.NewNotifier(Version)),
 		}
 		(*muRuntime).Init(options...)
 	}

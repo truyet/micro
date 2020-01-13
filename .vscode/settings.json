@@ -10,8 +10,6 @@
     "go.lintFlags": [],
     "go.vetFlags": [],
     "go.useCodeSnippetsOnFunctionSuggest": false,
-    "go.gopath": "/home/eamon/go",
-    "go.goroot": "/snap/go/4901",
     "go.testFlags": [
         "-v"
     ],
@@ -31,15 +29,5 @@
         "diagnostics": true,
         "documentLink": true
       },
-      "go.languageServerFlags": ["-logfile", "servrlog.log"],
-    "protoc": {
-//        "path": "${env.GOPATH}/bin/protoc",
-        "options": [
-            "--proto_path=protoc/v3",
-            "--proto_path=protoc/v2",
-            "--proto_path=${workspaceRoot}/proto",
-            "--proto_path=${env.GOPATH}/src",
-            "--go_out=."
-        ]
-    }
+      "go.languageServerFlags": ["-logfile", "debug.log"]
 }

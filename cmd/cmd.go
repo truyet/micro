@@ -8,10 +8,10 @@ import (
 	"github.com/micro/go-micro/config/cmd"
 	"github.com/micro/micro/api"
 	"github.com/micro/micro/debug"
+	"github.com/micro/micro/internal/platform"
 	"github.com/micro/micro/plugin"
 	"github.com/micro/micro/plugin/build"
-	"github.com/micro/micro/internal/platform"
-	_ "github.com/micro/micro/internal/usage"
+	"github.com/micro/micro/web"
 )
 
 //App Info Vars
@@ -184,6 +184,7 @@ func Setup(app *ccli.App, options ...micro.Option) {
 	app.Commands = append(app.Commands, api.Commands(options...)...)
 	app.Commands = append(app.Commands, debug.Commands(options...)...)
 	app.Commands = append(app.Commands, build.Commands()...)
+	app.Commands = append(app.Commands, web.Commands(options...)...)
 
 	// add the init command for our internal operator
 	app.Commands = append(app.Commands, ccli.Command{
