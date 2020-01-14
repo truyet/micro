@@ -13,7 +13,7 @@ import (
 	"github.com/micro/go-micro/registry"
 	"github.com/micro/go-micro/registry/cache"
 	"github.com/micro/go-micro/util/log"
-	stats "github.com/micro/micro/debug/stats/proto"
+	stats "github.com/micro-in-cn/x-gateway/debug/stats/proto"
 )
 
 // New initialises and returns a new Stats service handler

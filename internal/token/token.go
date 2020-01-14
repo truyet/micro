@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/hako/branca"
-	p "github.com/micro/micro/internal/token/proto"
+	p "github.com/micro-in-cn/x-gateway/internal/token/proto"
 	"github.com/pborman/uuid"
 )
 

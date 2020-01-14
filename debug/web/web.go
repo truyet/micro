@@ -15,7 +15,7 @@ import (
 	"github.com/micro/cli"
 	"github.com/micro/go-micro/client"
 	"github.com/micro/go-micro/web"
-	logpb "github.com/micro/micro/debug/log/proto"
+	logpb "github.com/micro-in-cn/x-gateway/debug/log/proto"
 )
 
 // Run starts go.micro.web.debug

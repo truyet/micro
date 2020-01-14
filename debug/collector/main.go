@@ -6,7 +6,7 @@ import (
 
 	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/util/log"
-	plugin "github.com/micro/micro/debug/collector/micro"
+	plugin "github.com/micro-in-cn/x-gateway/debug/collector/micro"
 
 	"github.com/netdata/go-orchestrator"
 	"github.com/netdata/go-orchestrator/cli"

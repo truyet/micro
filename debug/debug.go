@@ -8,12 +8,12 @@ import (
 	"github.com/micro/go-micro/debug/log/kubernetes"
 	dservice "github.com/micro/go-micro/debug/service"
 	ulog "github.com/micro/go-micro/util/log"
-	logHandler "github.com/micro/micro/debug/log/handler"
-	pblog "github.com/micro/micro/debug/log/proto"
-	"github.com/micro/micro/debug/stats"
-	statshandler "github.com/micro/micro/debug/stats/handler"
-	pbstats "github.com/micro/micro/debug/stats/proto"
-	"github.com/micro/micro/debug/web"
+	logHandler "github.com/micro-in-cn/x-gateway/debug/log/handler"
+	pblog "github.com/micro-in-cn/x-gateway/debug/log/proto"
+	"github.com/micro-in-cn/x-gateway/debug/stats"
+	statshandler "github.com/micro-in-cn/x-gateway/debug/stats/handler"
+	pbstats "github.com/micro-in-cn/x-gateway/debug/stats/proto"
+	"github.com/micro-in-cn/x-gateway/debug/web"
 )
 
 var (

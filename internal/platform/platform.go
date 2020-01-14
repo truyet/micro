@@ -11,8 +11,8 @@ import (
 	gorun "github.com/micro/go-micro/runtime"
 	"github.com/micro/go-micro/util/log"
 	// include usage
-	//"github.com/micro/micro/internal/update"
-	//_ "github.com/micro/micro/internal/usage"
+	//"github.com/micro-in-cn/x-gateway/internal/update"
+	//_ "github.com/micro-in-cn/x-gateway/internal/usage"
 )
 
 var (

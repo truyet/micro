@@ -7,12 +7,12 @@ import (
 
 	fileadapter "github.com/casbin/casbin/v2/persist/file-adapter"
 	"github.com/micro/go-micro/util/log"
-	"github.com/micro/micro/api"
-	"github.com/micro/micro/plugin/pkg/auth"
-	"github.com/micro/micro/plugin/pkg/metrics"
-	"github.com/micro/micro/plugin/pkg/opentracing"
-	"github.com/micro/micro/internal/helper/response"
-	tracer "github.com/micro/micro/plugin/pkg/trace"
+	"github.com/micro-in-cn/x-gateway/api"
+	"github.com/micro-in-cn/x-gateway/plugin/pkg/auth"
+	"github.com/micro-in-cn/x-gateway/plugin/pkg/metrics"
+	"github.com/micro-in-cn/x-gateway/plugin/pkg/opentracing"
+	"github.com/micro-in-cn/x-gateway/internal/helper/response"
+	tracer "github.com/micro-in-cn/x-gateway/plugin/pkg/trace"
 	"golang.org/x/time/rate"
 )
 

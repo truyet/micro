@@ -30,10 +30,10 @@ import (
 	cfstore "github.com/micro/go-micro/store/cloudflare"
 	"github.com/micro/go-micro/sync/lock/memory"
 	"github.com/micro/go-micro/util/log"
-	"github.com/micro/micro/internal/handler"
-	"github.com/micro/micro/internal/helper"
-	"github.com/micro/micro/internal/stats"
-	"github.com/micro/micro/plugin"
+	"github.com/micro-in-cn/x-gateway/internal/handler"
+	"github.com/micro-in-cn/x-gateway/internal/helper"
+	"github.com/micro-in-cn/x-gateway/internal/stats"
+	"github.com/micro-in-cn/x-gateway/plugin"
 	"github.com/serenize/snaker"
 )
 

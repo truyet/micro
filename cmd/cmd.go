@@ -6,12 +6,12 @@ import (
 	ccli "github.com/micro/cli"
 	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/config/cmd"
-	"github.com/micro/micro/api"
-	"github.com/micro/micro/debug"
-	"github.com/micro/micro/internal/platform"
-	"github.com/micro/micro/plugin"
-	"github.com/micro/micro/plugin/build"
-	"github.com/micro/micro/web"
+	"github.com/micro-in-cn/x-gateway/api"
+	"github.com/micro-in-cn/x-gateway/debug"
+	"github.com/micro-in-cn/x-gateway/internal/platform"
+	"github.com/micro-in-cn/x-gateway/plugin"
+	"github.com/micro-in-cn/x-gateway/plugin/build"
+	"github.com/micro-in-cn/x-gateway/web"
 )
 
 //App Info Vars

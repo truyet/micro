@@ -55,7 +55,7 @@ package main
 import (
   "log"
   "github.com/micro/cli"
-  "github.com/micro/micro/plugin"
+  "github.com/micro-in-cn/x-gateway/plugin"
   "github.com/micro/go-micro/util/log"
 )
 

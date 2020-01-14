@@ -3,10 +3,10 @@ package opentracing
 import (
 	"net/http"
 
-	"github.com/micro/micro/plugin"
+	"github.com/micro-in-cn/x-gateway/plugin"
 	"github.com/opentracing/opentracing-go"
 
-	"github.com/micro/micro/internal/helper/response"
+	"github.com/micro-in-cn/x-gateway/internal/helper/response"
 )
 
 // StartSpanFromHeader returns a new span with the given operation name and options. If a span

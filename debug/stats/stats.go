@@ -6,8 +6,8 @@ import (
 	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/util/log"
 
-	"github.com/micro/micro/debug/stats/handler"
-	stats "github.com/micro/micro/debug/stats/proto"
+	"github.com/micro-in-cn/x-gateway/debug/stats/handler"
+	stats "github.com/micro-in-cn/x-gateway/debug/stats/proto"
 )
 
 // Run is the entrypoint for debug/stats

@@ -1,4 +1,4 @@
-module github.com/micro/micro
+module github.com/micro-in-cn/x-gateway
 
 go 1.13
 

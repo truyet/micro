@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/micro/micro/plugin"
-	"github.com/micro/micro/internal/helper/request"
-	"github.com/micro/micro/internal/helper/response"
+	"github.com/micro-in-cn/x-gateway/plugin"
+	"github.com/micro-in-cn/x-gateway/internal/helper/request"
+	"github.com/micro-in-cn/x-gateway/internal/helper/response"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )

@@ -13,7 +13,7 @@ import (
 
 	"github.com/micro/go-micro/client"
 	"github.com/micro/go-micro/registry"
-	stats "github.com/micro/micro/debug/stats/proto"
+	stats "github.com/micro-in-cn/x-gateway/debug/stats/proto"
 )
 
 // Config is the go-micro collector configuration
