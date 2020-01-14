@@ -1,8 +1,8 @@
 package auth
 
 import (
-	"github.com/micro/micro/pkg/micro/util/request"
-	"github.com/micro/micro/pkg/micro/util/response"
+	"github.com/micro/micro/internal/helper/request"
+	"github.com/micro/micro/internal/helper/response"
 )
 
 //Options of auth

@@ -8,11 +8,11 @@ import (
 	fileadapter "github.com/casbin/casbin/v2/persist/file-adapter"
 	"github.com/micro/go-micro/util/log"
 	"github.com/micro/micro/api"
-	"github.com/micro/micro/pkg/micro/auth"
-	"github.com/micro/micro/pkg/micro/metrics"
-	"github.com/micro/micro/pkg/micro/opentracing"
-	"github.com/micro/micro/pkg/micro/util/response"
-	tracer "github.com/micro/micro/pkg/trace"
+	"github.com/micro/micro/plugin/pkg/auth"
+	"github.com/micro/micro/plugin/pkg/metrics"
+	"github.com/micro/micro/plugin/pkg/opentracing"
+	"github.com/micro/micro/internal/helper/response"
+	tracer "github.com/micro/micro/plugin/pkg/trace"
 	"golang.org/x/time/rate"
 )
 

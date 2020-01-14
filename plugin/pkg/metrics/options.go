@@ -1,7 +1,7 @@
 package metrics
 
 import (
-	"github.com/micro/micro/pkg/micro/util/request"
+	"github.com/micro/micro/internal/helper/request"
 )
 
 //Options of metric

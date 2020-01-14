@@ -6,7 +6,7 @@ import (
 	"github.com/micro/micro/plugin"
 	"github.com/opentracing/opentracing-go"
 
-	"github.com/micro/micro/pkg/micro/util/response"
+	"github.com/micro/micro/internal/helper/response"
 )
 
 // StartSpanFromHeader returns a new span with the given operation name and options. If a span

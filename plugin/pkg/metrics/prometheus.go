@@ -5,10 +5,10 @@ import (
 	"strconv"
 
 	"github.com/micro/micro/plugin"
+	"github.com/micro/micro/internal/helper/request"
+	"github.com/micro/micro/internal/helper/response"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/micro/micro/pkg/micro/util/request"
-	"github.com/micro/micro/pkg/micro/util/response"
 )
 
 //DefObjectives of prometheus
