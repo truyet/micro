@@ -11,7 +11,6 @@ require (
 	github.com/coreos/go-systemd v0.0.0-20190620071333-e64a0ec8b42a // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/eknkc/basex v1.0.0 // indirect
-	github.com/fsnotify/fsnotify v1.4.7
 	github.com/go-acme/lego/v3 v3.2.0
 	github.com/golang/groupcache v0.0.0-20190129154638-5b532d6fd5ef // indirect
 	github.com/golang/mock v1.3.1 // indirect
