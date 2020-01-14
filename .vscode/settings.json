@@ -14,15 +14,20 @@
         "-v"
     ],
     "go.autocompleteUnimportedPackages": true,
-
-    "protoc": {
-//        "path": "${env.GOPATH}/bin/protoc",
-        "options": [
-            "--proto_path=protoc/v3",
-            "--proto_path=protoc/v2",
-            "--proto_path=${workspaceRoot}/proto",
-            "--proto_path=${env.GOPATH}/src",
-            "--go_out=."
-        ]
-    }
+    "go.languageServerExperimentalFeatures": {
+        "format": true,
+        "autoComplete": true,
+        "rename": true,
+        "goToDefinition": true,
+        "hover": true,
+        "signatureHelp": true,
+        "goToTypeDefinition": true,
+        "goToImplementation": true,
+        "documentSymbols": true,
+        "workspaceSymbols": true,
+        "findReferences": true,
+        "diagnostics": true,
+        "documentLink": true
+      },
+      "go.languageServerFlags": ["-logfile", "debug.log"]
 }

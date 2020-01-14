@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -467,11 +468,13 @@ func NetworkRoutes(c *cli.Context) ([]byte, error) {
 		link := route["link"]
 		metric := route["metric"]
 
+		metInt, _ := strconv.ParseInt(route["metric"].(string), 10, 64)
+
 		// set max int64 metric to infinity
-		if f, ok := metric.(float64); ok && f == float64(math.MaxInt64) {
-			metric = "âˆ
+		if metInt == math.MaxInt64 {
+			metric = "ï¿½ï¿½
 		} else {
-			metric = fmt.Sprintf("%.f", route["metric"])
+			metric = fmt.Sprintf("%d", metInt)
 		}
 
 		sortedRoutes = append(sortedRoutes, []string{
