@@ -1,5 +1,5 @@
 NAME=x-gateway
-IMAGE_NAME=docker.pkg.github.com/micro-community/$(NAME)
+IMAGE_NAME=docker.pkg.github.com/micro-in-cn/$(NAME)
 GIT_COMMIT=$(shell git rev-parse --short HEAD)
 GIT_TAG=$(shell git describe --abbrev=0 --tags --always --match "v*")
 GIT_IMPORT=github.com/micro/micro/cmd
@@ -34,4 +34,10 @@ test: vet
 clean:
 	rm -rf ./x-gateway
 
-.PHONY: buildw build clean vet test docker
+run_api:
+	x-gateway --registry=$(registry) --transport=$(transport) api
+
+run_web:
+	x-gateway --registry=$(registry) --transport=$(transport) web
+
+.PHONY: run_web run_api buildw build clean vet test docker
