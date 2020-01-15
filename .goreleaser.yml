@@ -1,8 +1,8 @@
 project_name: x-gateway
 release:
   github:
-    owner: micro-china
-    name: micro-china
+    owner: micro-community
+    name: micro-api
   name_template: 'Release {{.Tag}}'
 before:
   hooks:
