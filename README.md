@@ -1,4 +1,4 @@
-# API-Gateway
+# x-Gateway
 
 基于Go-micro的高性能网关，增加自定义micro工具，如`Auth`、`CORS`等.
 

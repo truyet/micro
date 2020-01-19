@@ -2,40 +2,49 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: default
-  name: micro-store
+  name: micro-proxy
   labels:
     micro: runtime
+    name: micro-proxy
+  annotations:
+    name: "go.micro.proxy"
+    version: "latest"
+    source: "github.com/micro-in-cn/x-gateway"
+    owner: "micro"
+    group: "micro"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: micro-store
+      name: micro-proxy
       micro: runtime
   template:
     metadata:
       labels:
-        name: micro-store
+        name: micro-proxy
         micro: runtime
     spec:
       containers:
-      - name: micro-store
+      - name: proxy
         env:
         - name: MICRO_LOG_LEVEL
-          value: "debug"
+          value: "trace"
         - name: MICRO_BROKER
           value: "nats"
         - name: MICRO_BROKER_ADDRESS
           value: "nats-cluster"
+        - name: MICRO_ROUTER
+          value: "go.micro.router"
         - name: MICRO_REGISTRY
           value: "etcd"
         - name: MICRO_REGISTRY_ADDRESS
           value: "etcd-cluster-client"
-        - name: MICRO_STORE_BACKEND
-          value: "cockroach"
-        - name: MICRO_STORE_NODES
-          value: "host=cockroachdb-public port=26257 sslmode=disable user=root"
+        - name: MICRO_ENABLE_ACME
+          value: "true"
+        args:
+        - proxy
         image: micro/micro
         imagePullPolicy: Always
-        command:
-        - /micro
-        - store
+        ports:
+        - containerPort: 8081
+          name: proxy-port

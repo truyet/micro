@@ -1,3 +1,4 @@
+// Package platform manages the runtime services as a platform
 package platform
 
 import (
@@ -47,13 +48,13 @@ var (
 	}
 )
 
-type initNotifier struct {
-	gorun.Notifier
+type initScheduler struct {
+	gorun.Scheduler
 	services []string
 }
 
-func (i *initNotifier) Notify() (<-chan gorun.Event, error) {
-	ch, err := i.Notifier.Notify()
+func (i *initScheduler) Notify() (<-chan gorun.Event, error) {
+	ch, err := i.Scheduler.Notify()
 	if err != nil {
 		return nil, err
 	}
@@ -81,8 +82,8 @@ func (i *initNotifier) Notify() (<-chan gorun.Event, error) {
 	return evChan, nil
 }
 
-func initNotify(n gorun.Notifier, services []string) gorun.Notifier {
-	return &initNotifier{n, services}
+func initNotify(n gorun.Scheduler, services []string) gorun.Scheduler {
+	return &initScheduler{n, services}
 }
 
 // Init is the `micro init` command which manages the lifecycle
@@ -96,8 +97,8 @@ func Init(context *cli.Context) {
 	}
 
 	// create the combined list of services
-	initServices := append(services, dashboards...)
-	initServices = append(services, apis...)
+	initServices := append(dashboards, apis...)
+	initServices = append(initServices, services...)
 
 	// get the service prefix
 	if namespace := context.GlobalString("namespace"); len(namespace) > 0 {
@@ -110,13 +111,13 @@ func Init(context *cli.Context) {
 	muRuntime := cmd.DefaultCmd.Options().Runtime
 
 	// Use default update notifier
-	//notifier := update.NewNotifier(Version)
+	//notifier := update.NewScheduler(Version)
 	//wrapped := initNotify(notifier, initServices)
 
 	// specify with a notifier that fires
 	// individual events for each service
 	options := []gorun.Option{
-		//	gorun.WithNotifier(wrapped),
+	//	gorun.WithScheduler(wrapped),
 		gorun.WithType("runtime"),
 	}
 	(*muRuntime).Init(options...)
@@ -194,7 +195,7 @@ func Run(context *cli.Context) {
 	// Use default update notifier
 	if context.GlobalBool("auto_update") {
 		options := []gorun.Option{
-			//	gorun.WithNotifier(update.NewNotifier(Version)),
+	//		gorun.WithScheduler(update.NewScheduler(Version)),
 		}
 		(*muRuntime).Init(options...)
 	}

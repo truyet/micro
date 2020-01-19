@@ -2,30 +2,24 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: default
-  name: micro-broker
+  name: micro-store
   labels:
+    name: micro-store
     micro: runtime
-    name: micro-broker
-  annotations:
-    name: "go.micro.broker"
-    version: "latest"
-    source: "github.com/micro-in-cn/x-gateway"
-    owner: "micro"
-    group: "micro"
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      name: micro-broker
+      name: micro-store
       micro: runtime
   template:
     metadata:
       labels:
-        name: micro-broker
+        name: micro-store
         micro: runtime
     spec:
       containers:
-      - name: broker
+      - name: micro-store
         env:
         - name: MICRO_LOG_LEVEL
           value: "debug"
@@ -37,10 +31,12 @@ spec:
           value: "etcd"
         - name: MICRO_REGISTRY_ADDRESS
           value: "etcd-cluster-client"
-        args:
-        - broker
+        - name: MICRO_STORE_BACKEND
+          value: "cockroach"
+        - name: MICRO_STORE_NODES
+          value: "host=cockroachdb-public port=26257 sslmode=disable user=root"
         image: micro/micro
         imagePullPolicy: Always
-        ports:
-        - containerPort: 8001
-          name: broker-port
+        command:
+        - /micro
+        - store
