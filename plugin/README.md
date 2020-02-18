@@ -24,7 +24,7 @@ package main
 import (
 	"log"
 	"github.com/micro/cli/v2"
-	"github.com/micro/micro/plugin"
+	"github.com/micro/micro/v2/plugin"
 )
 
 func init() {

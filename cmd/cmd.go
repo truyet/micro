@@ -9,8 +9,8 @@ import (
 	"github.com/micro-in-cn/x-gateway/api"
 	"github.com/micro-in-cn/x-gateway/debug"
 	"github.com/micro-in-cn/x-gateway/internal/platform"
-	"github.com/micro/micro/plugin"
-	"github.com/micro/micro/plugin/build"
+	"github.com/micro/micro/v2/plugin"
+	"github.com/micro/micro/v2/plugin/build"
 	"github.com/micro-in-cn/x-gateway/web"
 )
 

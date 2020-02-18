@@ -472,7 +472,7 @@ func NetworkRoutes(c *cli.Context) ([]byte, error) {
 
 		// set max int64 metric to infinity
 		if metInt == math.MaxInt64 {
-			metric = "��
+			metric = "∞"
 		} else {
 			metric = fmt.Sprintf("%d", metInt)
 		}
