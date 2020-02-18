@@ -12,9 +12,9 @@ import (
 	"strings"
 
 	"github.com/gorilla/mux"
-	"github.com/micro/cli"
-	"github.com/micro/go-micro/client"
-	"github.com/micro/go-micro/web"
+	"github.com/micro/cli/v2"
+	"github.com/micro/go-micro/v2/client"
+	"github.com/micro/go-micro/v2/web"
 	logpb "github.com/micro-in-cn/x-gateway/debug/log/proto"
 )
 
@@ -26,7 +26,7 @@ func Run(ctx *cli.Context) {
 		web.Name("go.micro.web.debug"),
 	}
 
-	address := ctx.GlobalString("server_address")
+	address := ctx.String("server_address")
 	if len(address) > 0 {
 		opts = append(opts, web.Address(address))
 	}

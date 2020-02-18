@@ -6,25 +6,22 @@ import (
 	"sync"
 	"time"
 
-	"github.com/micro/go-micro/client"
-	"github.com/micro/go-micro/config/cmd"
-	debug "github.com/micro/go-micro/debug/service/proto"
-	"github.com/micro/go-micro/errors"
-	"github.com/micro/go-micro/registry"
-	"github.com/micro/go-micro/registry/cache"
-	"github.com/micro/go-micro/util/log"
+	"github.com/micro/go-micro/v2/client"
+	"github.com/micro/go-micro/v2/config/cmd"
+	debug "github.com/micro/go-micro/v2/debug/service/proto"
+	"github.com/micro/go-micro/v2/errors"
+	"github.com/micro/go-micro/v2/registry"
+	"github.com/micro/go-micro/v2/util/log"
+	"github.com/micro/go-micro/v2/util/ring"
 	stats "github.com/micro-in-cn/x-gateway/debug/stats/proto"
 )
 
 // New initialises and returns a new Stats service handler
-func New(done <-chan bool) (*Stats, error) {
+func New(done <-chan bool, windowSize int, services func() []*registry.Service) (*Stats, error) {
 	s := &Stats{
-		registry: cache.New(*cmd.DefaultOptions().Registry),
-		client:   *cmd.DefaultOptions().Client,
-	}
-
-	if err := s.scan(); err != nil {
-		return nil, err
+		client:    *cmd.DefaultOptions().Client,
+		snapshots: ring.New(windowSize),
+		services:  services,
 	}
 
 	s.Start(done)
@@ -33,43 +30,57 @@ func New(done <-chan bool) (*Stats, error) {
 
 // Stats is the Debug.Stats handler
 type Stats struct {
-	registry registry.Registry
-	client   client.Client
+	client client.Client
 
 	sync.RWMutex
-	snapshots []*stats.Snapshot
-	cached    []*registry.Service
+	// historical snapshots from the start
+	snapshots *ring.Buffer
+	// returns list of services
+	services func() []*registry.Service
 }
 
 // Read returns gets a snapshot of all current stats
 func (s *Stats) Read(ctx context.Context, req *stats.ReadRequest, rsp *stats.ReadResponse) error {
-	if req.Service == nil {
+	allSnapshots := []*stats.Snapshot{}
+
+	func() {
 		s.RLock()
-		rsp.Stats = s.snapshots
-		s.RUnlock()
+		defer s.RUnlock()
+
+		// get last snapshot
+		numEntries := 1
+
+		if req.Past {
+			numEntries = -1
+		}
+
+		entries := s.snapshots.Get(numEntries)
+
+		for _, entry := range entries {
+			allSnapshots = append(allSnapshots, entry.Value.([]*stats.Snapshot)...)
+		}
+	}()
+	if req.Service == nil {
+		rsp.Stats = allSnapshots
 		return nil
 	}
-
 	filter := func(a, b string) bool {
 		if len(b) == 0 {
 			return true
 		}
 		return a == b
 	}
-
-	s.RLock()
-	for _, s := range s.snapshots {
+	filteredSnapshots := []*stats.Snapshot{}
+	for _, s := range allSnapshots {
 		if !filter(s.Service.Name, req.Service.Name) {
 			continue
 		}
 		if !filter(s.Service.Version, req.Service.Version) {
 			continue
 		}
-		// append snapshot
-		rsp.Stats = append(rsp.Stats, s)
+		filteredSnapshots = append(filteredSnapshots, s)
 	}
-	s.RUnlock()
-
+	rsp.Stats = filteredSnapshots
 	return nil
 }
 
@@ -95,74 +106,16 @@ func (s *Stats) Start(done <-chan bool) {
 			}
 		}
 	}()
-
-	go func() {
-		t := time.NewTicker(10 * time.Second)
-		defer t.Stop()
-
-		for {
-			select {
-			case <-done:
-				return
-			case <-t.C:
-				if err := s.scan(); err != nil {
-					log.Debug(err)
-				}
-			}
-		}
-	}()
-}
-
-func (s *Stats) scan() error {
-	services, err := s.registry.ListServices()
-	if err != nil {
-		return err
-	}
-
-	if err != nil {
-		return err
-	}
-
-	serviceMap := make(map[string]*registry.Service)
-
-	// check each service has nodes
-	for _, service := range services {
-		if len(service.Nodes) > 0 {
-			serviceMap[service.Name+service.Version] = service
-			continue
-		}
-
-		// get nodes that does not exist
-		newServices, err := s.registry.GetService(service.Name)
-		if err != nil {
-			continue
-		}
-
-		// store service by version
-		for _, service := range newServices {
-			serviceMap[service.Name+service.Version] = service
-		}
-	}
-
-	// flatten the map
-	var serviceList []*registry.Service
-
-	for _, service := range serviceMap {
-		serviceList = append(serviceList, service)
-	}
-
-	// save the list
-	s.Lock()
-	s.cached = serviceList
-	s.Unlock()
-	return nil
 }
 
 func (s *Stats) scrape() {
+	// get services
+	cached := s.services()
+
 	s.RLock()
 	// Create a local copy of cached services
-	services := make([]*registry.Service, len(s.cached))
-	copy(services, s.cached)
+	services := make([]*registry.Service, len(cached))
+	copy(services, cached)
 	s.RUnlock()
 
 	// Start building the next list of snapshots
@@ -219,7 +172,8 @@ func (s *Stats) scrape() {
 					Requests: rsp.Requests,
 					Errors:   rsp.Errors,
 				}
-
+				timestamp := time.Now().Unix()
+				snap.Timestamp = uint64(timestamp)
 				mtx.Lock()
 				next = append(next, snap)
 				mtx.Unlock()
@@ -230,6 +184,6 @@ func (s *Stats) scrape() {
 
 	// Swap in the snapshots
 	s.Lock()
-	s.snapshots = next
+	s.snapshots.Put(next)
 	s.Unlock()
 }

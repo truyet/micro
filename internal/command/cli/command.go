@@ -11,14 +11,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/micro/cli"
-	"github.com/micro/go-micro/client"
-	cbytes "github.com/micro/go-micro/codec/bytes"
-	"github.com/micro/go-micro/config/cmd"
-	"github.com/micro/go-micro/metadata"
-	"github.com/micro/go-micro/registry"
+	"github.com/micro/cli/v2"
+	"github.com/micro/go-micro/v2/client"
+	cbytes "github.com/micro/go-micro/v2/codec/bytes"
+	"github.com/micro/go-micro/v2/config/cmd"
+	"github.com/micro/go-micro/v2/metadata"
+	"github.com/micro/go-micro/v2/registry"
 
-	proto "github.com/micro/go-micro/debug/service/proto"
+	proto "github.com/micro/go-micro/v2/debug/service/proto"
 
 	"github.com/serenize/snaker"
 )
