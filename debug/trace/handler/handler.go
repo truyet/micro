@@ -7,6 +7,7 @@ import (
 	"sync"
 	"time"
 
+	trace "github.com/micro-in-cn/x-gateway/debug/trace/proto"
 	"github.com/micro/go-micro/v2/client"
 	"github.com/micro/go-micro/v2/config/cmd"
 	debug "github.com/micro/go-micro/v2/debug/service/proto"
@@ -14,7 +15,6 @@ import (
 	"github.com/micro/go-micro/v2/registry"
 	"github.com/micro/go-micro/v2/util/log"
 	"github.com/micro/go-micro/v2/util/ring"
-	trace "github.com/micro/micro/v2/debug/trace/proto"
 )
 
 // New initialises and returns a new trace service handler

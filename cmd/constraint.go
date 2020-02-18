@@ -5,7 +5,7 @@ import (
 	"os"
 	"strings"
 
-	ccli "github.com/micro/cli"
+	ccli "github.com/micro/cli/v2"
 )
 
 // var defination

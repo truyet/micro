@@ -11,9 +11,9 @@ import (
 	"github.com/micro/go-micro/v2"
 	pb "github.com/micro/go-micro/v2/auth/service/proto"
 	"github.com/micro/go-micro/v2/util/log"
-	"github.com/micro/micro/v2/auth/api"
-	"github.com/micro/micro/v2/auth/handler"
-	"github.com/micro/micro/v2/internal/config"
+	"github.com/micro-in-cn/x-gateway/auth/api"
+	"github.com/micro-in-cn/x-gateway/auth/handler"
+	"github.com/micro-in-cn/x-gateway/internal/config"
 )
 
 var (

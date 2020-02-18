@@ -8,10 +8,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/micro/go-micro/v2/client"
-	stats "github.com/micro/micro/v2/debug/stats/proto"
-	"github.com/netdata/go-orchestrator/module"
 	stats "github.com/micro-in-cn/x-gateway/debug/stats/proto"
+	"github.com/micro/go-micro/v2/client"
+	"github.com/netdata/go-orchestrator/module"
 )
 
 // Config is the go-micro collector configuration

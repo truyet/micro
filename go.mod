@@ -6,18 +6,15 @@ require (
 	github.com/casbin/casbin/v2 v2.1.2
 	github.com/codahale/hdrhistogram v0.0.0-20161010025455-3a0bb77429bd // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1 // indirect
 	github.com/go-acme/lego/v3 v3.3.0
 	github.com/golang/protobuf v1.3.2
 	github.com/google/uuid v1.1.1
 	github.com/gorilla/mux v1.7.3
 	github.com/hako/branca v0.0.0-20180808000428-10b799466ada
-	github.com/micro/cli v0.2.0
 	github.com/micro/cli/v2 v2.1.2-0.20200203150404-894195727d9c
 	github.com/micro/go-micro v1.18.0
 	github.com/micro/go-micro/v2 v2.1.1-0.20200215215730-b3fc8be24e26
 	github.com/micro/micro/v2 v2.0.0
-	github.com/miekg/dns v1.1.27
 	github.com/netdata/go-orchestrator v0.0.0-20190905093727-c793edba0e8f
 	github.com/opentracing/opentracing-go v1.1.0
 	github.com/pborman/uuid v1.2.0

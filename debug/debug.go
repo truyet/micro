@@ -2,19 +2,17 @@
 package debug
 
 import (
+	logHandler "github.com/micro-in-cn/x-gateway/debug/log/handler"
+	pblog "github.com/micro-in-cn/x-gateway/debug/log/proto"
+	statshandler "github.com/micro-in-cn/x-gateway/debug/stats/handler"
+	pbstats "github.com/micro-in-cn/x-gateway/debug/stats/proto"
+	"github.com/micro-in-cn/x-gateway/debug/web"
 	"github.com/micro/cli/v2"
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/debug/log"
 	"github.com/micro/go-micro/v2/debug/log/kubernetes"
 	dservice "github.com/micro/go-micro/v2/debug/service"
 	ulog "github.com/micro/go-micro/v2/util/log"
-	logHandler "github.com/micro-in-cn/x-gateway/debug/log/handler"
-	pblog "github.com/micro-in-cn/x-gateway/debug/log/proto"
-	"github.com/micro-in-cn/x-gateway/debug/stats"
-	statshandler "github.com/micro-in-cn/x-gateway/debug/stats/handler"
-	pbstats "github.com/micro-in-cn/x-gateway/debug/stats/proto"
-	"github.com/micro-in-cn/x-gateway/debug/web"
-	"github.com/micro/micro/v2/debug/web"
 )
 
 var (

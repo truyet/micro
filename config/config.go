@@ -5,11 +5,11 @@ import (
 	"github.com/micro/go-micro/v2"
 	proto "github.com/micro/go-micro/v2/config/source/service/proto"
 	"github.com/micro/go-micro/v2/util/log"
-	"github.com/micro/micro/v2/config/db"
-	_ "github.com/micro/micro/v2/config/db/cockroach"
-	_ "github.com/micro/micro/v2/config/db/etcd"
-	_ "github.com/micro/micro/v2/config/db/memory"
-	"github.com/micro/micro/v2/config/handler"
+	"github.com/micro-in-cn/x-gateway/config/db"
+	_ "github.com/micro-in-cn/x-gateway/config/db/cockroach"
+	_ "github.com/micro-in-cn/x-gateway/config/db/etcd"
+	_ "github.com/micro-in-cn/x-gateway/config/db/memory"
+	"github.com/micro-in-cn/x-gateway/config/handler"
 )
 
 var (

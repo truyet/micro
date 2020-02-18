@@ -3,7 +3,7 @@
     "editor.codeLens": true,
     "editor.snippetSuggestions": "top",
     "extensions.ignoreRecommendations": false,
-    "go.lintOnSave": "workspace",
+    "go.lintOnSave": "off",
     "go.vetOnSave": "off",
     "go.buildTags": "",
     "go.buildFlags": [],

@@ -4,8 +4,7 @@ import (
 	"github.com/micro/cli/v2"
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/util/log"
-
-	pb "github.com/micro/micro/v2/auth/api/proto"
+	pb "github.com/micro-in-cn/x-gateway/auth/api/proto"
 )
 
 var (

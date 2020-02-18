@@ -7,8 +7,8 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/micro-in-cn/x-gateway/internal/config"
 	"github.com/micro/go-micro/v2/runtime"
-	"github.com/micro/micro/v2/internal/config"
 )
 
 // NewRuntime returns an initialized Platform struct

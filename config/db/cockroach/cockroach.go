@@ -8,7 +8,7 @@ import (
 	"github.com/micro/go-micro/v2/store"
 	roachStore "github.com/micro/go-micro/v2/store/cockroach"
 	"github.com/micro/go-micro/v2/util/log"
-	"github.com/micro/micro/v2/config/db"
+	"github.com/micro-in-cn/x-gateway/config/db"
 )
 
 var (
