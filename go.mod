@@ -8,11 +8,9 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-acme/lego/v3 v3.3.0
 	github.com/golang/protobuf v1.3.2
-	github.com/google/uuid v1.1.1
 	github.com/gorilla/mux v1.7.3
 	github.com/hako/branca v0.0.0-20180808000428-10b799466ada
 	github.com/micro/cli/v2 v2.1.2-0.20200203150404-894195727d9c
-	github.com/micro/go-micro v1.18.0
 	github.com/micro/go-micro/v2 v2.1.1-0.20200215215730-b3fc8be24e26
 	github.com/micro/micro/v2 v2.0.0
 	github.com/netdata/go-orchestrator v0.0.0-20190905093727-c793edba0e8f

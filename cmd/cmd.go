@@ -187,11 +187,9 @@ func Init(options ...micro.Option) {
 func Setup(app *ccli.App, options ...micro.Option) {
 	// Add the various commands
 	app.Commands = append(app.Commands, api.Commands(options...)...)
-	app.Commands = append(app.Commands, auth.Commands()...)
 	app.Commands = append(app.Commands, debug.Commands(options...)...)
 	app.Commands = append(app.Commands, build.Commands()...)
 	app.Commands = append(app.Commands, web.Commands(options...)...)
-	app.Commands = append(app.Commands, config.Commands(options...)...)
 
 	// add the init command for our internal operator
 	app.Commands = append(app.Commands, &ccli.Command{
