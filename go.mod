@@ -6,6 +6,7 @@ require (
 	github.com/casbin/casbin/v2 v2.1.2
 	github.com/codahale/hdrhistogram v0.0.0-20161010025455-3a0bb77429bd // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1 // indirect
 	github.com/go-acme/lego/v3 v3.3.0
 	github.com/golang/protobuf v1.3.2
 	github.com/google/uuid v1.1.1
