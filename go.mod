@@ -13,6 +13,7 @@ require (
 	github.com/micro/cli/v2 v2.1.2-0.20200203150404-894195727d9c
 	github.com/micro/go-micro/v2 v2.1.1-0.20200217092848-aa9a0a8d2332
 	github.com/micro/micro/v2 v2.0.0-20200217094223-bf173a600984
+	github.com/olekukonko/tablewriter v0.0.4
 	github.com/opentracing/opentracing-go v1.1.0
 	github.com/pborman/uuid v1.2.0
 	github.com/prometheus/client_golang v1.2.1

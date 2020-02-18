@@ -6,7 +6,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"math"
 	"net/http"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -20,6 +22,9 @@ import (
 
 	proto "github.com/micro/go-micro/v2/debug/service/proto"
 
+	dns "github.com/micro/micro/v2/network/dns/proto/dns"
+
+	"github.com/olekukonko/tablewriter"
 	"github.com/serenize/snaker"
 )
 
@@ -166,7 +171,6 @@ func callContext(c *cli.Context) context.Context {
 	return metadata.NewContext(context.Background(), callMD)
 }
 
-// Publish for cli
 func RegisterService(c *cli.Context, args []string) ([]byte, error) {
 	if len(args) == 0 {
 		return nil, errors.New("require service definition")
@@ -438,7 +442,6 @@ func NetworkRoutes(c *cli.Context) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	if len(rsp) == 0 {
 		return []byte(``), nil
 	}
@@ -468,7 +471,10 @@ func NetworkRoutes(c *cli.Context) ([]byte, error) {
 		link := route["link"]
 		metric := route["metric"]
 
-		metInt, _ := strconv.ParseInt(route["metric"].(string), 10, 64)
+		var metInt int64
+		if metric != nil {
+			metInt, _ = strconv.ParseInt(route["metric"].(string), 10, 64)
+		}
 
 		// set max int64 metric to infinity
 		if metInt == math.MaxInt64 {
@@ -664,7 +670,6 @@ func Publish(c *cli.Context, args []string) error {
 	return cl.Publish(ctx, m)
 }
 
-//CallService for cli
 func CallService(c *cli.Context, args []string) ([]byte, error) {
 	if len(args) < 2 {
 		return nil, errors.New(`require service and endpoint e.g micro call greeeter Say.Hello '{"name": "john"}'`)
