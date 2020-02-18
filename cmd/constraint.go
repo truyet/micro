@@ -61,7 +61,7 @@ func regularArguments(app *ccli.App) {
 
 	//cache the flag name for quick searching
 	for idx, f := range app.Flags {
-		flagNameSets[f.GetName()] = idx
+		flagNameSets[f.String()] = idx
 	}
 
 	for _, item := range args {
