@@ -3,15 +3,14 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/micro-in-cn/x-gateway/api"
+	"github.com/micro-in-cn/x-gateway/internal/platform"
+	"github.com/micro-in-cn/x-gateway/web"
 	ccli "github.com/micro/cli/v2"
 	"github.com/micro/go-micro/v2"
 	"github.com/micro/go-micro/v2/config/cmd"
-	"github.com/micro-in-cn/x-gateway/api"
-	"github.com/micro-in-cn/x-gateway/debug"
-	"github.com/micro-in-cn/x-gateway/internal/platform"
 	"github.com/micro/micro/v2/plugin"
 	"github.com/micro/micro/v2/plugin/build"
-	"github.com/micro-in-cn/x-gateway/web"
 )
 
 //App Info Vars
@@ -187,7 +186,6 @@ func Init(options ...micro.Option) {
 func Setup(app *ccli.App, options ...micro.Option) {
 	// Add the various commands
 	app.Commands = append(app.Commands, api.Commands(options...)...)
-	app.Commands = append(app.Commands, debug.Commands(options...)...)
 	app.Commands = append(app.Commands, build.Commands()...)
 	app.Commands = append(app.Commands, web.Commands(options...)...)
 
