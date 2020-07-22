@@ -12,14 +12,13 @@ import (
 	"time"
 
 	"github.com/micro/cli/v2"
-	"github.com/micro/go-micro/v2"
-
 	"github.com/micro/go-micro/v2/agent/command"
 	"github.com/micro/go-micro/v2/agent/input"
-	log "github.com/micro/go-micro/v2/logger"
-	botc "github.com/micro/micro/v2/internal/command/bot"
-
 	proto "github.com/micro/go-micro/v2/agent/proto"
+	log "github.com/micro/go-micro/v2/logger"
+	"github.com/micro/micro/v2/cmd"
+	botc "github.com/micro/micro/v2/internal/command/bot"
+	"github.com/micro/micro/v2/service"
 
 	// inputs
 	_ "github.com/micro/go-micro/v2/agent/input/discord"
@@ -30,7 +29,7 @@ import (
 type bot struct {
 	exit    chan bool
 	ctx     *cli.Context
-	service micro.Service
+	service *service.Service
 
 	sync.RWMutex
 	inputs   map[string]input.Input
@@ -81,7 +80,7 @@ func help(commands map[string]command.Command, serviceCommands []string) command
 	})
 }
 
-func newBot(ctx *cli.Context, inputs map[string]input.Input, commands map[string]command.Command, service micro.Service) *bot {
+func newBot(ctx *cli.Context, inputs map[string]input.Input, commands map[string]command.Command, service *service.Service) *bot {
 	commands["^help$"] = help(commands, nil)
 
 	return &bot{
@@ -351,14 +350,7 @@ func (b *bot) watch() {
 	}
 }
 
-func run(ctx *cli.Context) error {
-	log.Init(log.WithFields(map[string]interface{}{"service": "bot"}))
-
-	// Init plugins
-	for _, p := range Plugins() {
-		p.Init(ctx)
-	}
-
+func Run(ctx *cli.Context) error {
 	if len(ctx.String("server_name")) > 0 {
 		Name = ctx.String("server_name")
 	}
@@ -409,18 +401,18 @@ func run(ctx *cli.Context) error {
 	}
 
 	// setup service
-	service := micro.NewService(
-		micro.Name(Name),
-		micro.RegisterTTL(
+	srv := service.New(
+		service.Name(Name),
+		service.RegisterTTL(
 			time.Duration(ctx.Int("register_ttl"))*time.Second,
 		),
-		micro.RegisterInterval(
+		service.RegisterInterval(
 			time.Duration(ctx.Int("register_interval"))*time.Second,
 		),
 	)
 
 	// Start bot
-	b := newBot(ctx, ios, cmds, service)
+	b := newBot(ctx, ios, cmds, srv)
 
 	if err := b.start(); err != nil {
 		log.Errorf("error starting bot %v", err)
@@ -428,7 +420,7 @@ func run(ctx *cli.Context) error {
 	}
 
 	// Run server
-	if err := service.Run(); err != nil {
+	if err := srv.Run(); err != nil {
 		log.Fatal(err)
 	}
 
@@ -440,7 +432,7 @@ func run(ctx *cli.Context) error {
 	return nil
 }
 
-func Commands() []*cli.Command {
+func init() {
 	flags := []cli.Flag{
 		&cli.StringFlag{
 			Name:    "inputs",
@@ -459,22 +451,10 @@ func Commands() []*cli.Command {
 		flags = append(flags, input.Flags()...)
 	}
 
-	command := &cli.Command{
+	cmd.Register(&cli.Command{
 		Name:   "bot",
 		Usage:  "Run the chatops bot",
 		Flags:  flags,
-		Action: run,
-	}
-
-	for _, p := range Plugins() {
-		if cmds := p.Commands(); len(cmds) > 0 {
-			command.Subcommands = append(command.Subcommands, cmds...)
-		}
-
-		if flags := p.Flags(); len(flags) > 0 {
-			command.Flags = append(command.Flags, flags...)
-		}
-	}
-
-	return []*cli.Command{command}
+		Action: Run,
+	})
 }

@@ -6,23 +6,21 @@ import (
 	"time"
 
 	"github.com/micro/cli/v2"
-	"github.com/micro/go-micro/v2"
 	log "github.com/micro/go-micro/v2/logger"
 	"github.com/micro/go-micro/v2/registry"
-	"github.com/micro/go-micro/v2/registry/service"
+	regSrv "github.com/micro/go-micro/v2/registry/service"
 	pb "github.com/micro/go-micro/v2/registry/service/proto"
-	rcli "github.com/micro/micro/v2/client/cli"
-	"github.com/micro/micro/v2/internal/helper"
+	"github.com/micro/micro/v2/service"
 	"github.com/micro/micro/v2/service/registry/handler"
 )
 
 var (
-	// Name of the registry
-	Name = "go.micro.registry"
-	// The address of the registry
-	Address = ":8000"
-	// Topic to publish registry events to
-	Topic = "go.micro.registry.events"
+	// name of the registry
+	name = "go.micro.registry"
+	// address of the registry
+	address = ":8000"
+	// topic to publish registry events to
+	topic = "go.micro.registry.events"
 )
 
 // Sub processes registry events
@@ -48,7 +46,7 @@ func (s *subscriber) Process(ctx context.Context, event *pb.Event) error {
 	}
 
 	// decode protobuf to registry.Service
-	svc := service.ToService(event.Service)
+	svc := regSrv.ToService(event.Service)
 
 	// default ttl to 1 minute
 	ttl := time.Minute
@@ -78,83 +76,43 @@ func (s *subscriber) Process(ctx context.Context, event *pb.Event) error {
 	return nil
 }
 
-func Run(ctx *cli.Context, srvOpts ...micro.Option) {
-	log.Init(log.WithFields(map[string]interface{}{"service": "registry"}))
-
+func Run(ctx *cli.Context) error {
 	if len(ctx.String("server_name")) > 0 {
-		Name = ctx.String("server_name")
+		name = ctx.String("server_name")
 	}
 	if len(ctx.String("address")) > 0 {
-		Address = ctx.String("address")
-	}
-
-	// Init plugins
-	for _, p := range Plugins() {
-		p.Init(ctx)
+		address = ctx.String("address")
 	}
 
 	// service opts
-	srvOpts = append(srvOpts, micro.Name(Name))
+	srvOpts := []service.Option{service.Name(name)}
 	if i := time.Duration(ctx.Int("register_ttl")); i > 0 {
-		srvOpts = append(srvOpts, micro.RegisterTTL(i*time.Second))
+		srvOpts = append(srvOpts, service.RegisterTTL(i*time.Second))
 	}
 	if i := time.Duration(ctx.Int("register_interval")); i > 0 {
-		srvOpts = append(srvOpts, micro.RegisterInterval(i*time.Second))
+		srvOpts = append(srvOpts, service.RegisterInterval(i*time.Second))
 	}
 
 	// set address
-	if len(Address) > 0 {
-		srvOpts = append(srvOpts, micro.Address(Address))
+	if len(address) > 0 {
+		srvOpts = append(srvOpts, service.Address(address))
 	}
 
 	// new service
-	service := micro.NewService(srvOpts...)
+	srv := service.New(srvOpts...)
 	// get server id
-	id := service.Server().Options().Id
+	id := srv.Server().Options().Id
 
 	// register the handler
-	pb.RegisterRegistryHandler(service.Server(), &handler.Registry{
-		ID:        id,
-		Publisher: micro.NewPublisher(Topic, service.Client()),
-		Registry:  service.Options().Registry,
+	pb.RegisterRegistryHandler(srv.Server(), &handler.Registry{
+		ID:       id,
+		Event:    service.NewEvent(topic, srv.Client()),
+		Registry: srv.Options().Registry,
 	})
 
 	// run the service
-	if err := service.Run(); err != nil {
+	if err := srv.Run(); err != nil {
 		log.Fatal(err)
 	}
-}
-
-func Commands(options ...micro.Option) []*cli.Command {
-	command := &cli.Command{
-		Name:  "registry",
-		Usage: "Run the service registry",
-		Flags: []cli.Flag{
-			&cli.StringFlag{
-				Name:    "address",
-				Usage:   "Set the registry http address e.g 0.0.0.0:8000",
-				EnvVars: []string{"MICRO_SERVER_ADDRESS"},
-			},
-		},
-		Action: func(ctx *cli.Context) error {
-			if err := helper.UnexpectedSubcommand(ctx); err != nil {
-				return err
-			}
-			Run(ctx, options...)
-			return nil
-		},
-		Subcommands: rcli.RegistryCommands(),
-	}
-
-	for _, p := range Plugins() {
-		if cmds := p.Commands(); len(cmds) > 0 {
-			command.Subcommands = append(command.Subcommands, cmds...)
-		}
-
-		if flags := p.Flags(); len(flags) > 0 {
-			command.Flags = append(command.Flags, flags...)
-		}
-	}
-
-	return []*cli.Command{command}
+	return nil
 }
