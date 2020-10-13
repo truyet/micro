@@ -205,8 +205,8 @@ You will need to be connected to a Kubernetes cluster
 Install micro with the following commands:
 
 ```shell
-helm repo add micro https://ben-toogood.github.io/micro-helm
-helm install micro micro/micro --set image.repo=localhost:5000/micro
+helm repo add micro https://micro.github.io/helm
+helm install micro micro/micro
 ```
 
 #### Uninstall
@@ -294,7 +294,7 @@ Remove the service
 micro kill helloworld
 ```
 
-### Services
+## Services
 
 The Micro Server is not a monolithic process. Instead it is composed of many separate services.
 
@@ -303,13 +303,169 @@ building block primitive for a platform and distributed systems development. The
 interfaces for each can be found in [micro/proto/auth](https://github.com/micro/micro/blob/master/proto/auth/auth.proto) 
 and the Go library, client and server implementations in [micro/service/auth](https://github.com/micro/micro/tree/master/service/auth).
 
+### API
+
+The API service is a http API gateway which acts as a public entrypoint and converts http/json to RPC.
+
+#### Usage
+
+In the default `local` [environment](#environments) the API address is `127.0.0.1:8080`.
+Each service running is callable through this API.
+
+```sh
+$ curl http://127.0.0.1:8080/
+{"version": "v3.0.0-beta"}
+```
+
+An example call would be listing services in the registry:
+
+```sh
+$ curl http://127.0.0.1:8080/registry/listServices
+```
+
+The format is 
+```
+curl http://127.0.0.1:8080/[servicename]/[endpointName]
+```
+
+The endpoint name is lower camelcase.
+
+The parameters can be passed on as query params
+
+```sh
+$ curl http://127.0.0.1:8080/helloworld/call?name=Joe
+{"msg":"Hello Joe"}
+```
+
+or JSON body:
+
+```sh
+curl -XPOST --header "Content-Type: application/json" -d '{"name":"Joe"}' http://127.0.0.1:8080/helloworld/call
+{"msg":"Hello Joe"}
+```
+
+To specify a namespace when calling the API, the `Micro-Namespace` header can be used:
+
+```sh
+$ curl -H "Micro-Namespace: foobar" http://127.0.0.1:8080/helloworld/call?name=Joe
+```
+
+To call a [non-public service/endpoint](#auth), the `Authorization` header can be used:
+
+```sh
+MICRO_API_TOKEN=`micro user token`
+curl -H "Authorization: Bearer $MICRO_API_TOKEN" http://127.0.0.1:8080/helloworld/call?name=Joe
+```
+
 ### Auth
 
 The auth service provides both authentication and authorization.
+
+#### Overview
+
 The auth service stores accounts and access rules. It provides the single source of truth for all authentication 
 and authorization within the Micro runtime. Every service and user requires an account to operate. When a service 
 is started by the runtime an account is generated for it. Core services and services run by Micro load rules 
 periodically and manage the access to their resources on a per request basis.
+
+#### Usage
+
+For CLI command help use `micro auth --help` or auth subcommand help such as `micro auth create --help`.
+
+#### Login
+
+To login to a server simply so the following
+
+```
+$ micro login
+Enter email address: admin
+Enter Password: 
+Successfully logged in.
+```
+
+Assuming you are pointing to the right environment. It defaults to the local `micro server`.
+
+#### Rules
+
+Rules determine what resource a user can access. The default rule is the following:
+
+```sh
+$ micro auth list rules
+ID          Scope           Access      Resource        Priority
+default     <public>        GRANTED     *:*:*           0
+```
+
+The `default` rule makes all services callable that appear in the `micro status` output.
+Let's see an example of this.
+
+```sh
+$ micro run helloworld
+# Wait for the service to accept calls
+$ curl 127.0.0.1:8080/helloworld/call?name=Alice
+{"msg":"Hello Alice"}
+```
+
+If we want to prevent unauthorized users from calling our services, we can create the following rule
+
+```sh
+# This command creates a rule that enables only logged in users to call the micro server
+micro auth create rule  --access=granted --scope='*' --resource="*:*:*" onlyloggedin
+```
+
+and delete the default one.
+Here, the scope `*` is markedly different from the `<public>` scope we have seen earlier when doing a `micro auth list rules`:
+
+```sh
+$ micro auth list rules
+ID			    Scope			Access		Resource		Priority
+onlyloggedin	*			    GRANTED		*:*:*			0
+default			<public>		GRANTED		*:*:*			0
+```
+
+Now, let's remove the default rule.
+
+```sh
+# This command deletes the 'default' rule - the rule which enabled anyone to call the 'micro server'.
+$ micro auth delete rule default
+Rule deleted
+```
+
+Let's try curling our service again:
+
+```sh
+$ curl 127.0.0.1:8080/helloworld/call?name=Alice
+{"Id":"helloworld","Code":401,"Detail":"Unauthorized call made to helloworld:Helloworld.Call","Status":"Unauthorized"}
+```
+
+Our `onlyloggedin` rule took effect. We can still call the service with a token:
+
+```sh
+$ token=$(micro user token)
+# Locally:
+# curl "Authorization: Bearer $token" 127.0.0.1:8080/helloworld/call?name=Alice
+{"msg":"Hello Alice"}
+```
+
+(Please note tokens have a limited lifetime so the line `$ token=$(micro user token)` has to be reissued from time to time, or the command must be used inline.)
+
+#### Accounts
+
+Auth service supports the concept of accounts. The default account used to access the `micro server` is the admin account.
+
+```sh
+$ micro auth list accounts
+ID		Name		Scopes		Metadata
+admin		admin		admin		n/a
+```
+
+We can create accounts for teammates and coworkers with `micro auth create account`:
+
+```sh
+$ micro auth create account --scopes=admin jane
+Account created: {"id":"jane","type":"","issuer":"micro","metadata":null,"scopes":["admin"],"secret":"bb7c1a96-c0c6-4ff5-a0e9-13d456f3db0a","name":"jane"}
+```
+
+The freshly created account can be used with `micro login` by using the `jane` id and `bb7c1a96-c0c6-4ff5-a0e9-13d456f3db0a` password.
 
 ### Config
 
@@ -317,6 +473,9 @@ The config service provides dynamic configuration for services. Config can be st
 the application itself for configuring business logic, api keys, etc. We read and write these as key-value 
 pairs which also support nesting of JSON values. The config interface also supports storing secrets by 
 defining the secret key as an option at the time of writing the value.
+
+Further reading
+- [A comprehensive config tutorial](https://m3o.dev/tutorials/config)
 
 ### Broker
 
@@ -340,4 +499,140 @@ TODO
 
 ### Store
 
-TODO
+Micro's store interface is for persistent key-value storage.
+
+For a good beginner level doc on the Store, please see the [Getting started tutorial](/getting-started).
+
+#### Overview
+
+Key-value stores that support ordering of keys can be used to build complex applications.
+Due to their very limited feature set, key-value stores generally scale easily and reliably, often linearly with the number of nodes added.
+
+This scalability comes at the expense of inconvenience and mental overhead when writing business logic. For usecases where linear scalability is important, this tradeoff is preferred.
+
+#### Query by ID
+
+Reading by ID is the archetypical job for key value stores. Storing data to enable this ID works just like in any other database:
+
+```sh
+# entries designed for querying "users by id"
+KEY         VALUE
+id1         {"id":"id1", "name":"Jane", "class":"firstGrade",   "avgScore": 98}
+id2         {"id":"id2", "name":"Alice","class":"secondGrade",  "avgScore": 92}
+id3         {"id":"id3", "name":"Joe",  "class":"secondGrade"   "avgScore": 89}
+id4         {"id":"id4", "name":"Betty","class":"thirdGrade"    "avgScore": 94}
+```
+
+```go
+import "github.com/micro/micro/v3/service/store"
+
+records, err := store.Read("id1")
+if err != nil {
+	fmt.Println("Error reading from store: ", err)
+}
+fmt.Println(records[0].Value)
+// Will output {"id":"id1", "name":"Jane", "class":"firstGrade",   "avgScore": 98}
+```
+
+Given this data structure, we can do two queries:
+
+- reading a given key (get "id1", get "id2")
+- if the keys are ordered, we can ask for X number of entries after a key (get 3 entries after "id2")
+
+Finding values in an ordered set is possibly the simplest task we can ask a database.
+The problem with the above data structure is that it's not very useful to ask "find me keys coming in the order after "id2". To enable other kind of queries, the data must be saved with different keys.
+
+In the case of the schoold students, let's say we wan't to list by class. To do this, having the query in mind, we can copy the data over to an other table named after the query we want to do:
+
+#### Query by Field Value Equality
+
+```sh
+# entries designed for querying "users by class"
+KEY             VALUE
+firstGrade/id1  {"id":"id1", "name":"Jane", "class":"firstGrade",   "avgScore": 98}
+secondGrade/id2 {"id":"id2", "name":"Alice","class":"secondGrade",  "avgScore": 92}
+secondGrade/id3 {"id":"id3", "name":"Joe",  "class":"secondGrade"   "avgScore": 89}
+thirdGrade/id4  {"id":"id4", "name":"Betty","class":"thirdGrade"    "avgScore": 94}
+```
+
+
+```go
+import "github.com/micro/micro/v3/service/store"
+
+records, err := store.Read("", store.Prefix("secondGrade"))
+if err != nil {
+	fmt.Println("Error reading from store: ", err)
+}
+fmt.Println(records[0].Value)
+// Will output
+// secondGrade/id2 {"id":"id2", "name":"Alice","class":"secondGrade",  "avgScore": 92}
+// secondGrade/id3 {"id":"id3", "name":"Joe",  "class":"secondGrade"   "avgScore": 89}
+```
+
+Since the keys are ordered it is very trivial to get back let's say "all second graders".
+Key value stores which have their keys ordered support something similar to "key starts with/key has prefix" query. In the case of second graders, listing all records where the "keys start with `secondGrade`" will give us back all the second graders.
+
+This query is basically a `field equals to` as we essentially did a `field class == secondGrade`. But we could also exploit the ordered nature of the keys to do a value comparison query, ie `field avgScores is less than 90` or `field AvgScores is between 90 and 95` etc., if we model our data appropriately:
+
+#### Query for Field Value Ranges
+
+```sh
+# entries designed for querying "users by avgScore"
+KEY         VALUE
+089/id3     {"id":"id3", "name":"Joe",  "class":"secondGrade"   "avgScore": 89}
+092/id2     {"id":"id2", "name":"Alice","class":"secondGrade",  "avgScore": 92}
+094/id4     {"id":"id4", "name":"Betty","class":"thirdGrade"    "avgScore": 94}
+098/id1     {"id":"id1", "name":"Jane", "class":"firstGrade",   "avgScore": 98}
+```
+
+It's worth remembering that the keys are strings, and that they are ordered lexicographically. For this reason when dealing with numbering values, we must make sure that they are prepended to the same length appropriately.
+
+At the moment Micro's store does not support this kind of query, this example is only here to hint at future possibilities with the store.
+
+#### Tables Usage
+
+Micro services only have access to one Store table. This means all keys take live in the same namespace and can collide. A very useful pattern is to separate the entries by their intended query pattern, ie taking the "users by id" and users by class records above:
+
+```sh
+KEY         VALUE
+# entries designed for querying "users by id"
+usersById/id1         		{"id":"id1", "name":"Jane", "class":"firstGrade",   "avgScore": 98}
+usersById/id2         		{"id":"id2", "name":"Alice","class":"secondGrade",  "avgScore": 92}
+usersById/id3         		{"id":"id3", "name":"Joe",  "class":"secondGrade"   "avgScore": 89}
+usersById/id4         		{"id":"id4", "name":"Betty","class":"thirdGrade"    "avgScore": 94}
+# entries designed for querying "users by class"
+usersByClass/firstGrade/id1  {"id":"id1", "name":"Jane", "class":"firstGrade",   "avgScore": 98}
+usersByClass/secondGrade/id2 {"id":"id2", "name":"Alice","class":"secondGrade",  "avgScore": 92}
+usersByClass/secondGrade/id3 {"id":"id3", "name":"Joe",  "class":"secondGrade"   "avgScore": 89}
+usersByClass/thirdGrade/id4  {"id":"id4", "name":"Betty","class":"thirdGrade"    "avgScore": 94}
+```
+
+Respective go examples this way become:
+
+```go
+import "github.com/micro/micro/v3/service/store"
+
+const idPrefix = "usersById/"
+
+records, err := store.Read(idPrefix + "id1")
+if err != nil {
+	fmt.Println("Error reading from store: ", err)
+}
+fmt.Println(records[0].Value)
+// Will output {"id":"id1", "name":"Jane", "class":"firstGrade",   "avgScore": 98}
+```
+
+```go
+import "github.com/micro/micro/v3/service/store"
+
+const classPrefix = "usersByClass/"
+
+records, err := store.Read("", store.Prefix(classPrefix + "secondGrade"))
+if err != nil {
+	fmt.Println("Error reading from store: ", err)
+}
+fmt.Println(records[0].Value)
+// Will output
+// secondGrade/id2 {"id":"id2", "name":"Alice","class":"secondGrade",  "avgScore": 92}
+// secondGrade/id3 {"id":"id3", "name":"Joe",  "class":"secondGrade"   "avgScore": 89}
+```
