@@ -27,8 +27,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	raw "github.com/micro/go-micro/v3/codec/bytes"
-	"github.com/micro/go-micro/v3/errors"
+	raw "github.com/micro/micro/v3/internal/codec/bytes"
+	"github.com/micro/micro/v3/service/errors"
 	"github.com/micro/go-micro/v3/metadata"
 	"github.com/micro/micro/v3/service/broker"
 	"github.com/micro/micro/v3/service/client"

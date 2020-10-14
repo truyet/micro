@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/micro/go-micro/v3/config"
 	proto "github.com/micro/micro/v3/proto/config"
 	"github.com/micro/micro/v3/service/client"
+	"github.com/micro/micro/v3/service/config"
 	"github.com/micro/micro/v3/service/context"
 	"github.com/micro/micro/v3/service/errors"
 )
@@ -35,7 +35,7 @@ func (m *srv) Get(path string, options ...config.Option) (config.Value, error) {
 			Secret: o.Secret,
 		},
 	}, client.WithAuthToken())
-	if verr := errors.Parse(err); verr != nil && verr.Code == http.StatusNotFound {
+	if verr := errors.FromError(err); verr != nil && verr.Code == http.StatusNotFound {
 		return nullValue, nil
 	} else if err != nil {
 		return nullValue, err
