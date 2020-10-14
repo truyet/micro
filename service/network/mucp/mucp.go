@@ -25,9 +25,7 @@ import (
 	"time"
 
 	"github.com/golang/protobuf/proto"
-	"github.com/micro/go-micro/v3/registry/noop"
-	"github.com/micro/go-micro/v3/router"
-	"github.com/micro/go-micro/v3/util/backoff"
+	"github.com/micro/micro/v3/internal/backoff"
 	"github.com/micro/micro/v3/internal/network/resolver/dns"
 	"github.com/micro/micro/v3/internal/network/transport"
 	"github.com/micro/micro/v3/internal/network/tunnel"
@@ -39,6 +37,8 @@ import (
 	"github.com/micro/micro/v3/service/network"
 	pb "github.com/micro/micro/v3/service/network/mucp/proto"
 	"github.com/micro/micro/v3/service/proxy"
+	"github.com/micro/micro/v3/service/registry/noop"
+	"github.com/micro/micro/v3/service/router"
 	"github.com/micro/micro/v3/service/server"
 	smucp "github.com/micro/micro/v3/service/server/mucp"
 )

@@ -16,9 +16,9 @@
 package mud
 
 import (
-	"github.com/micro/go-micro/v3/store"
-	"github.com/micro/go-micro/v3/store/memory"
-	memsync "github.com/micro/go-micro/v3/sync/memory"
+	"github.com/micro/micro/v3/service/store"
+	"github.com/micro/micro/v3/service/store/memory"
+	memsync "github.com/micro/micro/v3/internal/sync/memory"
 	"github.com/micro/micro/v3/internal/codec/json"
 	"github.com/micro/micro/v3/service/model"
 )
