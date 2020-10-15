@@ -7,18 +7,13 @@ permalink: /getting-started
 summary: A getting started guide for Micro
 ---
 
-Micro is a framework for cloud native development.
+## Getting Started
 
-## Overview
-
-The key components of Micro are as follows.
-
-- Server: a runtime environment for managing services including auth, config, discovery, networking, storage
-- Clients: a http api, grpc proxy and command line for accessing services
-- Library: a Go library for writing services to be run in the micro runtime
-
+This is a getting started guide for Micro which teaches you how to go from install to helloworld and beyond.
 
 ## Contents
+{: .no_toc }
+
 
 * TOC
 {:toc}
@@ -40,11 +35,15 @@ go get github.com/micro/micro/v3/cmd/protoc-gen-micro
 
 ## Install
 
+### Go Get
+
 Using Go:
 
 ```sh
 go get github.com/micro/micro/v3
 ```
+
+### Release Binary
 
 Or by downloading the binary
 
@@ -57,6 +56,19 @@ wget -q  https://raw.githubusercontent.com/micro/micro/master/scripts/install.sh
 
 # Windows
 powershell -Command "iwr -useb https://raw.githubusercontent.com/micro/micro/master/scripts/install.ps1 | iex"
+```
+
+### Docker Image
+
+```
+docker pull micro/micro
+```
+
+### Helm Chart
+
+```
+helm repo add micro https://micro.github.io/helm
+helm install micro micro/micro
 ```
 
 ## Running a service
