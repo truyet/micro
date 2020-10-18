@@ -5,11 +5,11 @@ import (
 	"unicode"
 
 	"github.com/google/uuid"
-	"github.com/micro/micro/v3/service/errors"
 	"github.com/micro/micro/v3/client/cli/namespace"
 	clitoken "github.com/micro/micro/v3/client/cli/token"
 	"github.com/micro/micro/v3/client/cli/util"
 	"github.com/micro/micro/v3/service/auth"
+	"github.com/micro/micro/v3/service/errors"
 	"github.com/micro/micro/v3/service/logger"
 	"github.com/urfave/cli/v2"
 )
@@ -150,7 +150,17 @@ func refreshAuthToken() {
 				auth.WithToken(tok.RefreshToken),
 				auth.WithExpiry(time.Minute*10),
 			)
-			if err != nil {
+			if err == auth.ErrInvalidToken {
+				logger.Warnf("[Auth] Refresh token expired, regenerating using account credentials")
+
+				tok, err = auth.Token(
+					auth.WithCredentials(
+						auth.DefaultAuth.Options().ID,
+						auth.DefaultAuth.Options().Secret,
+					),
+					auth.WithExpiry(time.Minute*10),
+				)
+			} else if err != nil {
 				logger.Warnf("[Auth] Error refreshing token: %v", err)
 				continue
 			}
