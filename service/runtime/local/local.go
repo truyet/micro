@@ -112,6 +112,9 @@ func (r *localRuntime) Create(resource runtime.Resource, opts ...runtime.CreateO
 	case runtime.TypeNetworkPolicy:
 		// noop (NetworkPolicy is not supported by local)
 		return nil
+	case runtime.TypeResourceQuota:
+		// noop (ResourceQuota is not supported by local)
+		return nil
 	case runtime.TypeService:
 
 		// Assert the resource back into a *runtime.Service
@@ -128,7 +131,13 @@ func (r *localRuntime) Create(resource runtime.Resource, opts ...runtime.CreateO
 		}
 		if len(options.Command) == 0 {
 			options.Command = []string{"go"}
-			options.Args = []string{"run", "."}
+
+			// not all source will have a vendor directory (e.g. source pulled from a git remote)
+			if _, err := os.Stat(filepath.Join(s.Source, "vendor")); err == nil {
+				options.Args = []string{"run", "-mod", "vendor", "."}
+			} else {
+				options.Args = []string{"run", "."}
+			}
 		}
 
 		// pass secrets as env vars
@@ -198,6 +207,9 @@ func (r *localRuntime) Logs(resource runtime.Resource, options ...runtime.LogsOp
 		return nil, nil
 	case runtime.TypeNetworkPolicy:
 		// noop (NetworkPolicy is not supported by local)
+		return nil, nil
+	case runtime.TypeResourceQuota:
+		// noop (ResourceQuota is not supported by local)
 		return nil, nil
 	case runtime.TypeService:
 
@@ -360,6 +372,9 @@ func (r *localRuntime) Update(resource runtime.Resource, opts ...runtime.UpdateO
 	case runtime.TypeNetworkPolicy:
 		// noop (NetworkPolicy is not supported by local)
 		return nil
+	case runtime.TypeResourceQuota:
+		// noop (ResourceQuota is not supported by local)
+		return nil
 	case runtime.TypeService:
 
 		// Assert the resource back into a *runtime.Service
@@ -415,6 +430,9 @@ func (r *localRuntime) Delete(resource runtime.Resource, opts ...runtime.DeleteO
 		return nil
 	case runtime.TypeNetworkPolicy:
 		// noop (NetworkPolicy is not supported by local)
+		return nil
+	case runtime.TypeResourceQuota:
+		// noop (ResourceQuota is not supported by local)
 		return nil
 	case runtime.TypeService:
 
