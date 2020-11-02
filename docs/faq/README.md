@@ -21,7 +21,7 @@ Micro is open source but makes use of the Polyform Shield license to protect aga
 
 ### Where's go-micro repo（https://github.com/micro/go-micro)
 
-it had been moved and renamed to [asim/nitro](https://github.com/asim/nitro) which will focus on edge computing and embeded systems.
+it had been moved and renamed to [nitro](https://github.com/asim/nitro) which will focus on edge computing and embeded systems.
 
 ### Where's Community
 
@@ -43,14 +43,14 @@ Micro is runtime agnostic. You can run it anywhere you like. On bare metal, on A
 
 Yes. since v2 micro makes use of gRPC by default.
 
-## What's the difference between Micro and Go Micro?
+## What's the difference between Micro and Nitro(Go Micro)?
 
 Go Micro was an early attempt at building a framework for Go microservices development. We've since shifted our focus entirely to Micro, 
 a platform for cloud native development which includes a runtime server, framework library,and client. Go Micro is now 
-a standalone framework ,which had been renamed to `nitro`,for anyone who needs it, you can find it here [asim/nitro](https://github.com/asim/nitro) which will focus on edge computing and embeded systems.
+a standalone framework ,which had been renamed to `Nitro`,for anyone who needs it, you can find it here [asim/nitro](https://github.com/asim/nitro) which will focus on edge computing and embeded systems.
 
 
 ## Where Can I Learn More?
 
-Check out [Awesome Micro](https://github.com/micro/awesome-micro) for more resources
+Check out [Awesome Micro](https://github.com/micro-community/awesome-micro) for more resources
 
