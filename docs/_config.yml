@@ -25,8 +25,8 @@ description: >- # this means to ignore newlines until "baseurl:"
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: microhq
-github_username:  micro
-google_analytics: "UA-70478210-1"
+github_username:  micro-community
+#google_analytics: "UA-70478210-1"
 logo: "/images/logo.png"
 
 # Pagination
@@ -34,7 +34,7 @@ paginate: 15
 paginate_path: "/blog/page:num/"
 
 # Build settings
-theme: jekyll-theme-cayman
+theme: jekyll-theme-primer
 plugins:
   - jekyll-feed
   - jekyll-paginate
