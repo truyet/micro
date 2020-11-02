@@ -19,7 +19,7 @@ Micro is a platform for cloud native development.
 
 Micro is open source but makes use of the Polyform Shield license to protect against AWS running it as a managed service.
 
-### Where's go-micro repo（https://github.com/micro/go-micro)
+### Where's [go-micro]（https://github.com/micro/go-micro)
 
 it had been moved and renamed to [nitro](https://github.com/asim/nitro) which will focus on edge computing and embeded systems.
 
