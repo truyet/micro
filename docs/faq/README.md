@@ -37,7 +37,7 @@ Micro is runtime agnostic. You can run it anywhere you like. On bare metal, on A
 
 ## Does Micro support gRPC?
 
-Yes. In v2 micro makes use of gRPC by default.
+Yes. since v2 micro makes use of gRPC by default.
 
 ## What's the difference between Micro and Go Micro?
 
