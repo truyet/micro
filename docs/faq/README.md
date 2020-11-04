@@ -19,9 +19,13 @@ Micro is a platform for cloud native development.
 
 Micro is open source but makes use of the Polyform Shield license to protect against AWS running it as a managed service.
 
-### Where's the Community
+### Where's [go-micro](https://github.com/micro/go-micro)
 
-There's a slack community with thousands of members. Invite yourself at [slack.micro.mu](https://slack.micro.mu).
+it had been moved and renamed to [nitro](https://github.com/asim/nitro) which will focus on edge computing and embeded systems.
+
+### Where's Community
+
+Here! a non-offical community, [Join Us](https://github.com/micro-community/how-to-join)
 
 ## Where do I start?
 
@@ -37,15 +41,16 @@ Micro is runtime agnostic. You can run it anywhere you like. On bare metal, on A
 
 ## Does Micro support gRPC?
 
-Yes. In v2 micro makes use of gRPC by default.
+Yes. since v2 micro makes use of gRPC by default.
 
-## What's the difference between Micro and Go Micro?
+## What's the difference between Micro and Nitro(Go Micro)?
 
 Go Micro was an early attempt at building a framework for Go microservices development. We've since shifted our focus entirely to Micro, 
-a platform for cloud native development which includes a server, command line and service framework (previously go-micro). Go Micro is now 
-a standalone framework for anyone who needs it.
+a platform for cloud native development which includes a runtime server, framework library,and client. Go Micro is now 
+a standalone framework ,which had been renamed to `Nitro`,for anyone who needs it, you can find it here [asim/nitro](https://github.com/asim/nitro) which will focus on edge computing and embeded systems.
+
 
 ## Where Can I Learn More?
 
-Check out [Awesome Micro](https://github.com/micro/awesome-micro) for more resources
+Check out [Awesome Micro](https://github.com/micro-community/awesome-micro) for more resources
 
