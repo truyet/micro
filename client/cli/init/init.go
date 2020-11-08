@@ -1,4 +1,4 @@
-// Package init provides the micro init command for initialising plugins and profiles
+// Package init provides the micro init command for initializing plugins and profiles
 package init
 
 import (
@@ -11,10 +11,9 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
+//meta data of micro
 var (
-	// The import path we use for profiles
-	Import = "github.com/micro/micro/profile"
-	// Vesion of micro
+	Import  = "github.com/micro/micro/profile"
 	Version = "v3"
 )
 

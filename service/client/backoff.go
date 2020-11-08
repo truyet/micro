@@ -23,6 +23,7 @@ import (
 	"github.com/micro/micro/v3/internal/backoff"
 )
 
+//BackoffFunc for retry delay
 type BackoffFunc func(ctx context.Context, req Request, attempts int) (time.Duration, error)
 
 func exponentialBackoff(ctx context.Context, req Request, attempts int) (time.Duration, error) {
