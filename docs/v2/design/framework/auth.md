@@ -33,7 +33,7 @@ The auth interface provides the following methods. Each one is explained in deta
 ```go
 // Auth providers authentication and authorization
 type Auth interface {
-	// Initialise the auth implementation. This must be called before any other methods are called.
+	// Initialize the auth implementation. This must be called before any other methods are called.
 	Init(opts ...Option)
 	// Options returns all the options set when initialising the auth implementation, such as credentials etc.
 	Options() Options

@@ -103,7 +103,7 @@ func Run(ctx *cli.Context) error {
 		nodes = strings.Split(ctx.String("nodes"), ",")
 	}
 
-	// Initialise the local service
+	// Initialize the local service
 	service := service.New(
 		service.Name(name),
 		service.Address(address),

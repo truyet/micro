@@ -23,7 +23,7 @@ func Run(ctx *cli.Context) error {
 		address = ctx.String("address")
 	}
 
-	// Initialise service
+	// Initialize service
 	service := service.New(
 		service.Name(name),
 		service.Address(address),

@@ -49,7 +49,7 @@ func Run(ctx *cli.Context) error {
 		gateway = ctx.String("gateway")
 	}
 
-	// Initialise service
+	// Initialize service
 	srv := service.New(
 		service.Name(name),
 		service.Address(address),

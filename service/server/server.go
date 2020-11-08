@@ -30,7 +30,7 @@ var DefaultServer Server
 
 // Server is a simple micro server abstraction
 type Server interface {
-	// Initialise options
+	// Initialize options
 	Init(...Option) error
 	// Retrieve the options
 	Options() Options

@@ -24,7 +24,7 @@ import (
 )
 
 type API interface {
-	// Initialise options
+	// Initialize options
 	Init(...Option) error
 	// Get the options
 	Options() Options

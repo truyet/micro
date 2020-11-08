@@ -17,7 +17,7 @@ Here's the proposed design for the model to be added as go-micro/model
 
 ```
 type Model interface {
-	// Initialise options
+	// Initialize options
 	Init(...Option) error
 	// Retrieve options
 	Options() Options

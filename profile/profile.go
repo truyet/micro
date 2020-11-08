@@ -212,6 +212,7 @@ func SetupJWT(ctx *cli.Context) {
 	}
 }
 
+//SetupConfigSecretKey config default SecretKey
 func SetupConfigSecretKey(ctx *cli.Context) {
 	key := ctx.String("config_secret_key")
 	if len(key) == 0 {

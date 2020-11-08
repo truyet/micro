@@ -26,7 +26,7 @@ var (
 
 // Sync is an interface for distributed synchronization
 type Sync interface {
-	// Initialise options
+	// Initialize options
 	Init(...Option) error
 	// Return the options
 	Options() Options

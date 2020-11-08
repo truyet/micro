@@ -117,7 +117,7 @@ func TestNamespace(t *testing.T) {
 		assert.Nil(t, err, "Setting the default namespace should not error")
 	})
 
-	// Adding and setting valid namesapce again to test removal
+	// Adding and setting valid namespace again to test removal
 	t.Run("AddValidNamespace", func(t *testing.T) {
 		err := Add(namespace, envName)
 		assert.Nil(t, err, "Adding a valid namespace to an environment should not return an error")
@@ -133,9 +133,9 @@ func TestNamespace(t *testing.T) {
 		assert.Nil(t, err, "Removing a valid namespace from an environment should not return an error")
 	})
 
-	t.Run("GetOverridenNamespace", func(t *testing.T) {
+	t.Run("GetOverriddenNamespace", func(t *testing.T) {
 		ns, err := Get(envName)
-		assert.Nil(t, err, "Getting an overriden namespace should not return an error")
-		assert.Equal(t, registry.DefaultDomain, ns, "Getting an overriden namespace should return the correct value")
+		assert.Nil(t, err, "Getting an overridden namespace should not return an error")
+		assert.Equal(t, registry.DefaultDomain, ns, "Getting an overridden namespace should return the correct value")
 	})
 }

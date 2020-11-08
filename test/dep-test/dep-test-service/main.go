@@ -19,7 +19,7 @@ func main() {
 		service.Version("latest"),
 	)
 
-	// Initialise service
+	// Initialize service
 	srv.Init()
 	fmt.Println(dependency.Hello)
 

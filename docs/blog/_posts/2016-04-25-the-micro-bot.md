@@ -71,7 +71,7 @@ Here's the Input interface.
 type Input interface {
 	// Provide cli flags
 	Flags() []cli.Flag
-	// Initialise input using cli context
+	// Initialize input using cli context
 	Init(*cli.Context) error
 	// Stream events from the input
 	Stream() (Conn, error)
@@ -299,7 +299,7 @@ Write an input that satisfies the Input interface.
 type Input interface {
 	// Provide cli flags
 	Flags() []cli.Flag
-	// Initialise input using cli context
+	// Initialize input using cli context
 	Init(*cli.Context) error
 	// Stream events from the input
 	Stream() (Conn, error)
