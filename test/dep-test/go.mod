@@ -1,3 +1,3 @@
-module github.com/micro/micro/test/dep-test
+module dependency
 
 go 1.15

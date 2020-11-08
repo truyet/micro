@@ -6,7 +6,8 @@ import (
 	"fmt"
 
 	dep "dep-test-service/proto/dep"
-	dependency "dependency"
+
+	"dependency"
 
 	"github.com/micro/micro/v3/service"
 	log "github.com/micro/micro/v3/service/logger"
