@@ -15,8 +15,8 @@ import (
 
 	"github.com/micro/micro/v3/client/cli/namespace"
 	"github.com/micro/micro/v3/client/cli/util"
-	"github.com/micro/micro/v3/internal/config"
-	run "github.com/micro/micro/v3/internal/runtime"
+	"github.com/micro/micro/v3/platform/config"
+	run "github.com/micro/micro/v3/platform/runtime"
 	"github.com/micro/micro/v3/service/logger"
 	"github.com/micro/micro/v3/service/runtime"
 	"github.com/micro/micro/v3/service/runtime/local/source/git"

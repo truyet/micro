@@ -8,7 +8,7 @@ import (
 	"github.com/micro/micro/v3/client/cli/namespace"
 	"github.com/micro/micro/v3/client/cli/util"
 	"github.com/micro/micro/v3/cmd"
-	"github.com/micro/micro/v3/internal/helper"
+	"github.com/micro/micro/v3/platform/helper"
 	proto "github.com/micro/micro/v3/proto/config"
 	"github.com/micro/micro/v3/service/client"
 	"github.com/micro/micro/v3/service/context"

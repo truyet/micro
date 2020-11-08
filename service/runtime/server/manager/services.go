@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/micro/micro/v3/internal/namespace"
+	"github.com/micro/micro/v3/platform/namespace"
 	"github.com/micro/micro/v3/service/runtime"
 	"github.com/micro/micro/v3/service/store"
 	gostore "github.com/micro/micro/v3/service/store"

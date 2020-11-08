@@ -17,8 +17,8 @@
 package grpc
 
 import (
-	"github.com/micro/micro/v3/internal/codec"
-	"github.com/micro/micro/v3/internal/codec/bytes"
+	"github.com/micro/micro/v3/platform/codec"
+	"github.com/micro/micro/v3/platform/codec/bytes"
 )
 
 type rpcRequest struct {
