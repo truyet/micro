@@ -7,7 +7,7 @@ require (
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/bmizerany/assert v0.0.0-20160611221934-b7ed37b82869 // indirect
 	github.com/boltdb/bolt v1.3.1
-	github.com/caddyserver/certmagic v0.12.0
+	github.com/caddyserver/certmagic v0.10.6
 	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e
 	github.com/davecgh/go-spew v1.1.1
 	github.com/desertbit/timer v0.0.0-20180107155436-c41aec40b27f // indirect
@@ -31,6 +31,7 @@ require (
 	github.com/miekg/dns v1.1.35
 	github.com/minio/minio-go/v7 v7.0.5
 	github.com/olekukonko/tablewriter v0.0.4
+	github.com/onsi/gomega v1.7.1
 	github.com/oxtoacart/bpool v0.0.0-20190530202638-03653db5a59c
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/pkg/errors v0.9.1

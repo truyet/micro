@@ -41,13 +41,13 @@ Micro is runtime agnostic. You can run it anywhere you like. On bare metal, on A
 
 ## Does Micro support gRPC?
 
-Yes. since v2 micro makes use of gRPC by default.
+Yes. In v2 and beyond micro makes use of gRPC by default.
 
 ## What's the difference between Micro and Nitro(Go Micro)?
 
 Go Micro was an early attempt at building a framework for Go microservices development. We've since shifted our focus entirely to Micro, 
 a platform for cloud native development which includes a runtime server, framework library,and client. Go Micro is now 
-a standalone framework ,which had been renamed to `Nitro`,for anyone who needs it, you can find it here [asim/nitro](https://github.com/asim/nitro) which will focus on edge computing and embeded systems.
+a standalone framework for anyone who needs it and moved to [Nitro](https://github.com/asim/nitro) for clarity.
 
 
 ## Where Can I Learn More?
