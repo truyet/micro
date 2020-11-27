@@ -1,5 +1,12 @@
+<div>
+  <a href="https://twitter.com/microhq"><img src="https://img.shields.io/twitter/follow/microhq?label=microhq&style=social" /></a>
+  <a href="https://github.com/micro/micro/network/members"><img src="https://img.shields.io/github/forks/micro/micro?style=social" /></a>
+  <a href="https://github.com/micro/micro/stargazers"><img src="https://img.shields.io/github/stars/micro/micro?style=social" /></a>
+</div>
 
-Micro is an open source platform for cloud native application development.
+<div style="border: 1px solid #333333">
+  <img src="{{ site.baseurl }}/images/banner.png" />
+</div>
 
 ## Overview
 
@@ -40,7 +47,7 @@ Join us on [Discord](https://discord.gg/hbmJEct) or [Slack](https://slack.micro.
 
 ## Hosting
 
-If you're interested in a hosted version of Micro see [m3o.com](https://m3o.com).
+If you're interested in a hosted version of Micro aka the Micro Platform see [m3o.com](https://m3o.com).
 
 ## License
 

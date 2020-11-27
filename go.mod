@@ -15,7 +15,7 @@ require (
 	github.com/dustin/go-humanize v1.0.0
 	github.com/evanphx/json-patch/v5 v5.1.0
 	github.com/go-acme/lego/v3 v3.9.0
-	github.com/gobwas/httphead v0.0.0-20200921212729-da3d93bc3c58
+	github.com/getkin/kin-openapi v0.26.0
 	github.com/gobwas/pool v0.2.1 // indirect
 	github.com/gobwas/ws v1.0.4
 	github.com/golang/protobuf v1.4.3
@@ -38,7 +38,6 @@ require (
 	github.com/rhysd/go-github-selfupdate v1.2.2
 	github.com/rs/cors v1.7.0 // indirect
 	github.com/serenize/snaker v0.0.0-20201027110005-a7ad2135616e
-	github.com/soheilhy/cmux v0.1.4
 	github.com/stretchr/testify v1.6.1
 	github.com/teris-io/shortid v0.0.0-20171029131806-771a37caa5cf
 	github.com/urfave/cli/v2 v2.3.0
