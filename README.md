@@ -1,8 +1,6 @@
 # Micro [![License](https://img.shields.io/badge/license-polyform:shield-blue)](https://polyformproject.org/licenses/shield/1.0.0/) [![Go Report Card](https://goreportcard.com/badge/micro/micro)](https://goreportcard.com/report/github.com/micro/micro)
 
-<div style="border: 1px solid #333333;">
-  <img src="https://github.com/micro/micro/raw/master/docs/images/banner.png" />
-</div>
+<kbd><img src="https://raw.githubusercontent.com/micro/micro/master/docs/images/banner.png" /></kbd>
 
 ## Overview
 
@@ -12,11 +10,13 @@ with the complexity of distributed systems and provides simpler programmable abs
 
 ## Features
 
+Below are the core components that make up Micro.
+
+**Server**
+
 Micro is built as a microservices architecture and abstracts away the complexity of the underlying infrastructure. We compose 
 this as a single logical server to the user but decompose that into the various building block primitives that can be plugged 
 into any underlying system. 
-
-**Server**
 
 The server is composed of the following services.
 
@@ -26,7 +26,7 @@ The server is composed of the following services.
 - **Config** - Dynamic configuration and secrets management for service level config without the need to restart
 - **Events** - Event streaming with ordered messaging, replay from offsets and persistent storage
 - **Network** - Inter-service networking, isolation and routing plane for all internal request traffic
-- **Proxy** - gRPC identity aware proxy used for remote access and any external grpc request traffic
+- **Proxy** - An identity aware proxy used for remote access and any external grpc request traffic
 - **Runtime** - Service lifecyle and process management with support for source to running auto build
 - **Registry** - Centralised service discovery and API endpoint explorer with feature rich metadata
 - **Store** - Key-Value storage with TTL expiry and persistent crud to keep microservices stateless
@@ -112,10 +112,13 @@ micro new helloworld
 # run the service
 micro run helloworld
 
-# list services
+# check the status
+micro status
+
+# list running services
 micro services
 
-# call a service
+# call the service
 micro helloworld --name=Alice
 
 # curl via the api
@@ -209,10 +212,6 @@ See the [docs](https://micro.mu) for detailed information on the architecture, i
 
 See [LICENSE](LICENSE) which makes use of [Polyform Shield](https://polyformproject.org/licenses/shield/1.0.0/).
 
-## Hosting
-
-If you're interested in a hosted version of Micro see [m3o.com](https://m3o.com).
-
 ## Community
 
-Join us on [Discord](https://discord.gg/hbmJEct), [Slack](https://slack.micro.mu) or follow on [Twitter](https://twitter.com/microhq) for updates.
+Join us on [Slack](https://slack.micro.mu) or follow on [Twitter](https://twitter.com/microhq) for updates.
